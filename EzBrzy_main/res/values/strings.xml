@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">EzBrzy_Homework_Planner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_ez_brzy__main">EzBrzy_Main</string>
+
+</resources>
