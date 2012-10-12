@@ -16,15 +16,18 @@
 </head>
 
 <body onload="init();" id="stage" class="theme">
-
-<button id="addFileButton">Create/Append to Test File</button>
-<button id="readFileButton">Read Test File</button>
-<button id="metadataFileButton">Get Test File Metadata</button>
-<button id="deleteFileButton">Delete Test File</button>
-<button id="dirListingButton">Show Directory Contents</button>
-<button id="addAlertData">Alert Button</button>
-
-<div id="content"></div>
+<div data-role="page" id="page1">
+	<div data-role="header"><h2>Header</h2></div> 
+	<div data-role="content">
+		<button id="addFileButton">Create/Append to Test File</button>
+		<button id="readFileButton">Read Test File</button>
+		<button id="metadataFileButton">Get Test File Metadata</button>
+		<button id="deleteFileButton">Delete Test File</button>
+		<button id="dirListingButton">Show Directory Contents</button>
+		<button id="addAlertData">Alert Button</button>
+	</div>
+	<div data-role="footer">Footer</div>
+</div>
 
 </body>
 </html>
