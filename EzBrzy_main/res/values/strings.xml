@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="EzBrzy_Homework_Planner">EzBrzy_Homework_Planner</string>
+    <string name="EzBrzy_Homework_Planner">EzBrzy Homework Planner</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_ez_brzy__main">EzBrzy_Main</string>
+    <string name="title_activity_ez_brzy__main">EzBrzy Planner</string>
 
 </resources>
