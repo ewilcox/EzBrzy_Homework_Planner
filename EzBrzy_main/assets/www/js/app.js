@@ -111,6 +111,8 @@ function doAlertData(e) {
 }
 
 function onFSSuccess(fs) {
+	writeData();
+/*	
     fileSystem = fs;
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
     getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
@@ -123,4 +125,11 @@ function onFSSuccess(fs) {
                                     "root entry name is "+fileSystem.root.name + "<p/>")    
 
     doDirectoryListing();
+*/
+}
+
+function writeData() {
+	var output="";
+	for (i=0; i<20; i++) output += "<p>test data ... "+ i + "</p>";
+	$("#testData").html(output);
 }

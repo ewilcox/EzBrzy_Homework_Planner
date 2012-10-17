@@ -14,22 +14,28 @@
 <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
 
 </head>
-<body onload="onLoad();">
+<body onload="init();">
 
 		<!-- Assignments Screen -->
-		<div data-role="page" id="assignments" data-theme="e">
-			<div data-role="header" data-id="myheader" data-position="fixed"><h1>EzBrzy Homework Planner</h1>
+		<div data-role="page" id="assignments" data-theme="A">
+			<div data-role="header" data-id="myheader" data-position="fixed"><div class="appTitle">EzBrzy Homework Planner</div>
 				<div data-role="navbar">
 					<ul>
-		       			<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse" data-theme="b">Assignments</a></li>
-		       			<li><a href="#courses" data-role="button" data-transition="pop" data-direction="reverse">Courses</a></li>
-		       			<li><a href="#notes" data-role="button" data-transition="pop" data-direction="reverse">Other Reminders</a></li>
+		       			<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="grid">Assignments</a></li>
+		       			<li><a href="#courses" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="gear">Courses</a></li>
+		       			<li><a href="#notes" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="info">Other Reminders</a></li>
 		       		</ul>
 				</div>
-			
 			</div>
 			<div data-role="content">
 	   			<h2>Assignments section</h2>
+<!-- Testing for scroll -->
+	   			<h3>Scroll testing section</h3>
+	   			<div id="testData"></div>
+<!-- End of test section -->
 			</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -45,7 +51,18 @@
 		
 		<!-- Courses Screen -->
 		<div data-role="page" id="courses" data-theme="e">
-			<div data-role="header" data-id="myheader" data-position="fixed"><h1>Courses Screen</h1></div>
+			<div data-role="header" data-id="myheader" data-position="fixed"><h6>EzBrzy Homework Planner</h6>
+				<div data-role="navbar">
+					<ul>
+		       			<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="grid">Assignments</a></li>
+		       			<li><a href="#courses" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="gear">Courses</a></li>
+		       			<li><a href="#notes" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+		       				data-icon="info">Other Reminders</a></li>
+		       		</ul>
+				</div>
+			</div>
 			<div data-role="content">
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
@@ -61,7 +78,18 @@
 		
 		<!-- Notes Screen -->
 		<div data-role="page" id="notes" data-theme="e">
-		<div data-role="header" data-id="myheader" data-position="fixed"><h1>Notes Screen</h1></div>
+		<div data-role="header" data-id="myheader" data-position="fixed"><h6>EzBrzy Homework Planner</h6>
+			<div data-role="navbar">
+				<ul>
+	       			<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+	       				data-icon="grid">Assignments</a></li>
+	       			<li><a href="#courses" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+	       				data-icon="gear">Courses</a></li>
+	       			<li><a href="#notes" data-role="button" data-transition="pop" data-direction="reverse" data-theme="" data-iconpos="top"
+	       				data-icon="info">Other Reminders</a></li>
+	       		</ul>
+			</div>
+		</div>
 			<div data-role="content">
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
