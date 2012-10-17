@@ -1,2 +1,3 @@
 button { width: 100%; padding: 5px; }
-.appTitle { text-align: center; padding: 5px; }
+h4.appTitle { text-align: center; padding: 5px; margin-top: 0; margin-bottom: 0; }
+p.displaying { text-align: left; padding: 5px; margin-top:0; margin-bottom: 0; }

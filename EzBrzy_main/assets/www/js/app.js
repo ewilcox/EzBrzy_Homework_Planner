@@ -112,6 +112,7 @@ function doAlertData(e) {
 
 function onFSSuccess(fs) {
 	writeData();
+	displayListing();
 /*	
     fileSystem = fs;
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
@@ -132,4 +133,16 @@ function writeData() {
 	var output="";
 	for (i=0; i<20; i++) output += "<p>test data ... "+ i + "</p>";
 	$("#testData").html(output);
+}
+
+// TODO: calculate numbers!
+function displayListing() {
+	var outputAssign='', outputCourses='', outputNotes='', 
+		numAssignments = 0, numCourses=0, numNotes=0;
+	outputAssign += 'Displaying '+ numAssignments + ' Assignment(s)';
+	outputCourses += 'Displaying '+ numCourses + ' Course(s)';
+	outputNotes += 'Displaying '+ numNotes + ' Note(s)';
+	$('#assignmentDisplay').html(outputAssign);
+	$('#coursesDisplay').html(outputCourses);
+	$('#notesDisplay').html(outputNotes);
 }

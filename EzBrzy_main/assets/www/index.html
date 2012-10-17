@@ -16,9 +16,9 @@
 </head>
 <body onload="init();">
 
-		<!-- Assignments Screen -->
+<!-- Assignments Screen -->
 		<div data-role="page" id="assignments" data-theme="a">
-			<div data-role="header" data-id="myheader" data-position="fixed"><div class="appTitle">EzBrzy Homework Planner</div>
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<div data-role="navbar">
 					<ul>
 		       			<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse" data-iconpos="top"
@@ -29,6 +29,7 @@
 		       				data-icon="info">Other Reminders</a></li>
 		       		</ul>
 				</div>
+				<p id="assignmentDisplay" class="displaying"></p>
 			</div>
 			<div data-role="content">
 	   			<h2>Assignments section</h2>
@@ -48,9 +49,9 @@
 		</div>
 	
 		
-		<!-- Courses Screen -->
+<!-- Courses Screen -->
 		<div data-role="page" id="courses" data-theme="a">
-			<div data-role="header" data-id="myheader" data-position="fixed"><div class="appTitle">EzBrzy Homework Planner</div>
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<div data-role="navbar">
 					<ul>
 		       			<li><a href="#assignments" data-role="button" data-transition="pop" data-direction="reverse" data-iconpos="top"
@@ -61,8 +62,10 @@
 		       				data-icon="info">Other Reminders</a></li>
 		       		</ul>
 				</div>
+				<p id="coursesDisplay" class="displaying"></p>
 			</div>
 			<div data-role="content">
+				<h2>Course Content Here</h2>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -73,9 +76,9 @@
 			</div>
 		</div>
 		
-		<!-- Notes Screen -->
+<!-- Notes Screen -->
 		<div data-role="page" id="notes" data-theme="a">
-		<div data-role="header" data-id="myheader" data-position="fixed"><div class="appTitle">EzBrzy Homework Planner</div>
+		<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 			<div data-role="navbar">
 				<ul>
 	       			<li><a href="#assignments" data-role="button" data-transition="pop" data-direction="reverse" data-iconpos="top"
@@ -86,8 +89,10 @@
 	       				data-icon="info">Other Reminders</a></li>
 	       		</ul>
 			</div>
+			<p id="notesDisplay" class="displaying"></p>
 		</div>
 			<div data-role="content">
+				<h2>Other Notes Content Here</h2>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
