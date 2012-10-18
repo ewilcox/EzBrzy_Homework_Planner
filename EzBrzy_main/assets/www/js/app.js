@@ -109,10 +109,14 @@ function alertData(f){
 function doAlertData(e) {
 		fileSystem.root.getFile("test.txt", {create:true}, alertData, onError);
 }
+function saveNote() {
+	
+}
 
 function onFSSuccess(fs) {
 	writeData();
 	displayListing();
+	getById("#saveNote").addEventListener("touchstart",saveNote);
 /*	
     fileSystem = fs;
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            

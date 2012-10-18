@@ -4,7 +4,7 @@
 <head>
 <title>File Read Write Example</title>
 <meta name="viewport" content="width=320; user-scalable=no" />
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
 <link rel="stylesheet" href="css/myTheme3.css" />
 <link rel="stylesheet" href="css/mystyle.css" />
@@ -41,7 +41,7 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse">Add Assignment</a>
+						<li><a href="#" data-role="button" data-transition="none" data-direction="reverse">Add New Assignment</a>
 					</ul>
 				</div>
 					
@@ -70,7 +70,7 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse">New Course</a>
+						<li><a href="#" data-role="button" data-transition="none" data-direction="reverse">Add New Course</a>
 					</ul>
 				</div>
 			</div>
@@ -93,11 +93,45 @@
 		</div>
 			<div data-role="content">
 				<h2>Other Notes Content Here</h2>
+				<input type="text" name="name" id="basic" value="" />
+				<div data-role="fieldcontain">
+					<label for="textarea">Description</label>
+					<textarea name="textarea" id="textarea"></textarea>
+				</div>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-role="button" data-transition="pop" data-direction="reverse">New Reminder</a>
+						<li><a href="#addnote" data-role="button" data-transition="none" data-direction="reverse">Add New Reminder</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+<!-- Add New Note Screen -->
+		<div data-role="page" id="addnote" data-theme="a">
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
+				<hr>
+				<div><p class="displaying">Add Other Reminder</p></div>
+			</div>
+			<div data-role="content">
+				<label for="noteDesc">Description</label>
+				<textarea name="noteDesc" id="noteDesc" value=""></textarea>
+				<label for="noteDateDue">Date Due:</label>
+				<input type="text" name="noteDateDue" value=""/>
+				<label for="noteTimeDue">Time Due:</label>
+				<input type="text" name="noteTimeDue" value=""/>
+				<label for="noteReminder">Reminder</label>
+				<select name="noteReminder" id="noteReminder" data-role="slider">
+					<option value="On">On</option>
+					<option value="Off">Off</option>
+				</select>
+		   	</div>
+			<div data-role="footer" data-id="myfooter" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#notes" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
 					</ul>
 				</div>
 			</div>
