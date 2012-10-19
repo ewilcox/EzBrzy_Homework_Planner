@@ -12,6 +12,7 @@
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+<script src="http://debug.phonegap.com/target/target-script-min.js#erics"></script>
 
 </head>
 <body onload="init();">
@@ -66,6 +67,7 @@
 			</div>
 			<div data-role="content">
 				<h2>Course Content Here</h2>
+				<ul data-role="listview"><li><a href="">test link</a></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -91,9 +93,9 @@
 			</div>
 			<p id="notesDisplay" class="displaying"></p>
 		</div>
-			<div data-role="content">
-				<button id="readNotes">List Saved Note Text</button>
-				<div id="noteContent"></div>
+			<div data-role="content" id="noteContent">
+				<div><button id="deleteNotes">DELETE ALL NOTES</button></div>
+				<ul data-role="listview"><li><a href="">my link</a></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">

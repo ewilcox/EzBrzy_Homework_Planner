@@ -112,42 +112,47 @@ function doAlertData(e) {
 }
 function doSaveNote() {
 	fileSystem.root.getFile("notes.txt", {create:true}, saveNote, onError);
-	alert("did saveNote");
 }
 function saveNote(f) {
+	var ref = "";
     f.createWriter(function(writerOb) {
         writerOb.onwrite=function() {
-        	alert("Done writing to file.");
+        	doReadNotes();
         }
         //go to the end of the file...
         writerOb.seek(writerOb.length);
-        writerOb.write("Test at "+new Date().toString() + "\n");
+        writerOb.write('<li><a href="' + ref + '">Test at ' + new Date().toString() + '</a></li>\n');
     })
 }
-
-function doReadNote() {
+function doDeleteNotes(e) {
+    fileSystem.root.getFile("notes.txt", {create:true}, function(f) {
+        f.remove(function() {
+            doReadNotes();
+            alert("Notes file deleted");
+        });
+    }, onError);
+}
+function doReadNotes() {
 	fileSystem.root.getFile("notes.txt", {create:true}, readNote, onError);
 }
 function readNote(f) {
-	alert("did readNote");
     reader = new FileReader();
     reader.onloadend = function(e) {
-        //console.log("go to end");
-        logNote("<pre>" + e.target.result + "</pre><p/>");
+        logNote("<pre>" + e.target.result + "</pre>");
     }
     reader.readAsText(f);
 }
 function logNote(data) {
-    $('#noteContent').html(data);
+    $('#noteContent > ul').html(data);
 	//getById("#content").innerHTML = data;
 }
 function onFSSuccess(fs) {
+    fileSystem = fs;
 	writeData();
 	displayListing();
 	getById("#saveNote").addEventListener("touchstart",doSaveNote);
-	getById("#readNotes").addEventListener("touchstart",doReadNote);
+	getById("#deleteNotes").addEventListener("touchstart",doDeleteNotes);
 /*	
-    fileSystem = fs;
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
     getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
     getById("#readFileButton").addEventListener("touchstart",doReadFile);            
@@ -157,7 +162,6 @@ function onFSSuccess(fs) {
     
     logit( "Got the file system: "+fileSystem.name +" " +
                                     "root entry name is "+fileSystem.root.name + "<p/>")    
-
     doDirectoryListing();
 */
 }
@@ -178,4 +182,5 @@ function displayListing() {
 	$('#assignmentDisplay').html(outputAssign);
 	$('#coursesDisplay').html(outputCourses);
 	$('#notesDisplay').html(outputNotes);
+	doReadNotes();
 }
