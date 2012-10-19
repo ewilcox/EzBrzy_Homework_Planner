@@ -114,14 +114,14 @@ function doSaveNote() {
 	fileSystem.root.getFile("notes.txt", {create:true}, saveNote, onError);
 }
 function saveNote(f) {
-	var ref = "";
+	var ref = "#";
     f.createWriter(function(writerOb) {
         writerOb.onwrite=function() {
         	doReadNotes();
         }
         //go to the end of the file...
         writerOb.seek(writerOb.length);
-        writerOb.write('<li><a href="' + ref + '">Test at ' + new Date().toString() + '</a></li>\n');
+        writerOb.write('<li><a href="' + ref + '">Test at ' + new Date().toString() + '</a></li>');
     })
 }
 function doDeleteNotes(e) {
@@ -143,8 +143,9 @@ function readNote(f) {
     reader.readAsText(f);
 }
 function logNote(data) {
-    $('#noteContent ul').html(data);
-	//getById("#content").innerHTML = data;
+	//var output = '<li>' + data + '</li>';
+    $('#noteContent ul').html(data).listview('refresh');
+	//this works too-->//getById("#noteContent ul").innerHTML = data;
 }
 function onFSSuccess(fs) {
     fileSystem = fs;
@@ -183,4 +184,10 @@ function displayListing() {
 	$('#coursesDisplay').html(outputCourses);
 	$('#notesDisplay').html(outputNotes);
 	doReadNotes();
+	// Not working --> //$('#noteContent ul li').listview('refresh');
+	//try {
+	//    $('#noteContent ul').listview('refresh');
+	//} catch(e) {
+	//     $('#noteContent ul').listview();
+	//}
 }

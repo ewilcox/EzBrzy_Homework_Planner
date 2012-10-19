@@ -2,12 +2,7 @@ button { width: 100%; padding: 5px; }
 h4.appTitle { text-align: center; padding: 5px; margin-top: 0; margin-bottom: 0; }
 p.displaying { text-align: left; padding: 5px; margin-top:0; margin-bottom: 0; }
 .textInput { margin-left: 22%; }
-.no-ellipsis { 
-	text-overflow: ellipsis;
-	overflow: visible;
-	white-space: no-wrap;
-}
-.redButton { 
+.redButton { 	/* Gradient from: http://www.colorzilla.com/gradient-editor/ */
 	background: #ff3019; /* Old browsers */
 	background: -moz-linear-gradient(top,  #ff3019 33%, #cf0404 66%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(33%,#ff3019), color-stop(66%,#cf0404)); /* Chrome,Safari4+ */
@@ -16,4 +11,9 @@ p.displaying { text-align: left; padding: 5px; margin-top:0; margin-bottom: 0; }
 	background: -ms-linear-gradient(top,  #ff3019 33%,#cf0404 66%); /* IE10+ */
 	background: linear-gradient(to bottom,  #ff3019 33%,#cf0404 66%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 ); /* IE6-9 */
+}
+.no-ellipsis { 
+	text-overflow: ellipsis;
+	overflow: visible;
+	white-space: no-wrap;
 }
