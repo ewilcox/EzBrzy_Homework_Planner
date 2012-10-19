@@ -143,7 +143,7 @@ function readNote(f) {
     reader.readAsText(f);
 }
 function logNote(data) {
-    $('#noteContent > ul').html(data);
+    $('#noteContent ul').html(data);
 	//getById("#content").innerHTML = data;
 }
 function onFSSuccess(fs) {

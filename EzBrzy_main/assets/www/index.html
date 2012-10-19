@@ -12,7 +12,6 @@
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
-<script src="http://debug.phonegap.com/target/target-script-min.js#erics"></script>
 
 </head>
 <body onload="init();">
@@ -32,7 +31,7 @@
 				</div>
 				<p id="assignmentDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content">
+			<div data-role="content" class="myContent">
 	   			<h2>Assignments section</h2>
 <!-- Testing for scroll -->
 	   			<h3>Scroll testing section</h3>
@@ -65,7 +64,7 @@
 				</div>
 				<p id="coursesDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content">
+			<div data-role="content" class="myContent">
 				<h2>Course Content Here</h2>
 				<ul data-role="listview"><li><a href="">test link</a></ul>
 	   		</div>
@@ -93,9 +92,9 @@
 			</div>
 			<p id="notesDisplay" class="displaying"></p>
 		</div>
-			<div data-role="content" id="noteContent">
-				<div><button id="deleteNotes">DELETE ALL NOTES</button></div>
-				<ul data-role="listview"><li><a href="">my link</a></ul>
+			<div data-role="content" class="myContent" id="noteContent">
+				<div><a data-role="button" id="deleteNotes" class="redButton">DELETE ALL NOTES</a><br></div>
+				<ul data-role="listview" data-theme="b"></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -137,6 +136,9 @@
 	</body>
 
 </html>
+
+<!-- TODO -->
+<!--  -->
 
 <!-- 
 <body onload="init();" id="stage" class="theme">
