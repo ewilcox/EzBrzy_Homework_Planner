@@ -21,7 +21,8 @@ function logit(s) {
 
 //generic error handler
 function onError(e) {
-    getById("#content").innerHTML = "<h2>Error</h2>"+e.toString();
+    alert("Error: "+e.toString());
+	//getById("#content").innerHTML = "<h2>Error</h2>"+e.toString();
  }
 
 function doDeleteFile(e) {
@@ -109,14 +110,42 @@ function alertData(f){
 function doAlertData(e) {
 		fileSystem.root.getFile("test.txt", {create:true}, alertData, onError);
 }
-function saveNote() {
-	
+function doSaveNote() {
+	fileSystem.root.getFile("notes.txt", {create:true}, saveNote, onError);
+	alert("did saveNote");
+}
+function saveNote(f) {
+    f.createWriter(function(writerOb) {
+        writerOb.onwrite=function() {
+        	alert("Done writing to file.");
+        }
+        //go to the end of the file...
+        writerOb.seek(writerOb.length);
+        writerOb.write("Test at "+new Date().toString() + "\n");
+    })
 }
 
+function doReadNote() {
+	fileSystem.root.getFile("notes.txt", {create:true}, readNote, onError);
+}
+function readNote(f) {
+	alert("did readNote");
+    reader = new FileReader();
+    reader.onloadend = function(e) {
+        //console.log("go to end");
+        logNote("<pre>" + e.target.result + "</pre><p/>");
+    }
+    reader.readAsText(f);
+}
+function logNote(data) {
+    $('#noteContent').html(data);
+	//getById("#content").innerHTML = data;
+}
 function onFSSuccess(fs) {
 	writeData();
 	displayListing();
-	getById("#saveNote").addEventListener("touchstart",saveNote);
+	getById("#saveNote").addEventListener("touchstart",doSaveNote);
+	getById("#readNotes").addEventListener("touchstart",doReadNote);
 /*	
     fileSystem = fs;
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
