@@ -1,4 +1,5 @@
-var fileSystem;
+var fileSystem,
+	dbShell;
 
 function onDeviceReady() {
 
@@ -147,12 +148,55 @@ function logNote(data) {
     $('#noteContent ul').html(data).listview('refresh');
 	//this works too-->//getById("#noteContent ul").innerHTML = data;
 }
+function doLog(data) {
+	//console.log(data);
+}
+function renderEntries(tx,results) {
+	//doLog("render entries");
+	var $content = $('#assignmentContent'),
+		id = results.rows.item(i).id,
+		title = results.rows.item(i).title;
+	if (results.rows.length == 0) { $content.html('<p>You do not have any notes currently</p>'); }
+	else {
+		var s = '';
+		for (var i=0; i<results.rows.length; i++) {
+			s += '<li><a href="#addAssignment" data-role="button" data-transition="none" data-direction="reverse">' + id + " - " + title + '</a></li>';
+//			s += "<li><a href='edit.html?id="+results.rows.item(i).id + "'>" + results.rows.item(i).title + "</a></li>"; //pick up here!!
+		}
+		$content.html(s)
+			.listview('refresh');
+	}
+}
+function saveAssignment(note,cb) {
+    if(note.title == "") note.title = "[No Title]";
+    dbShell.transaction(function(tx) {
+        if(note.id == "") tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[note.title,note.body, new Date()]);
+        else tx.executeSql("update notes set title=?, body=?, updated=? where id=?",[note.title,note.body, new Date(), note.id]);
+    }, dbErrorHandler,cb);
+    getEntries();
+}
+function getEntries() {
+	dbShell.transaction(function(tx) {
+		tx.executeSql("select id, title, body, updated from notes order by updated desc",[],renderEntries,dbErrorHandler);
+	}, dbErrorHandler);
+}
+function dbErrorHandler(err) {
+	alert("DB Error : " + err.message + "\n\nCode=" + err.code);
+}
+function setupTable(tx) {
+	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(id INTEGER PRIMARY KEY,title,body,updated)");
+	alert("setup table done");
+}
 function onFSSuccess(fs) {
     fileSystem = fs;
-	writeData();
 	displayListing();
+	//writeData();
 	getById("#saveNote").addEventListener("touchstart",doSaveNote);
 	getById("#deleteNotes").addEventListener("touchstart",doDeleteNotes);
+	getById('#saveAssignment').addEventListener("touchstart",saveAssignment);
+	
+    dbShell = window.openDatabase("ezbrzy_db","1.0","EzBrzy Database",1000000);
+    dbShell.transaction(setupTable,dbErrorHandler,getEntries);
 /*	
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
     getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
@@ -180,7 +224,7 @@ function displayListing() {
 	outputAssign += 'Displaying '+ numAssignments + ' Assignment(s)';
 	outputCourses += 'Displaying '+ numCourses + ' Course(s)';
 	outputNotes += 'Displaying '+ numNotes + ' Note(s)';
-	$('#assignmentDisplay').html(outputAssign);
+	$('#assignmentsDisplay').html(outputAssign);
 	$('#coursesDisplay').html(outputCourses);
 	$('#notesDisplay').html(outputNotes);
 	doReadNotes();

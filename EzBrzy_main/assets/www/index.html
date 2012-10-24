@@ -29,25 +29,50 @@
 		       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
 		       		</ul>
 				</div>
-				<p id="assignmentDisplay" class="displaying"></p>
+				<p id="assignmentsDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content" class="myContent">
-	   			<h2>Assignments section</h2>
-<!-- Testing for scroll -->
-	   			<h3>Scroll testing section</h3>
-	   			<div id="testData"></div>
-<!-- End of test section -->
-			</div>
+			<div data-role="content" id="assignmentContent" class="myContent"></div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-role="button" data-transition="none" data-direction="reverse">Add New Assignment</a>
+						<li><a href="#addAssignment" data-role="button" data-transition="none" data-direction="reverse">Add New Assignment</a>
 					</ul>
 				</div>
 					
 			</div>
 		</div>
-	
+		
+<!-- Add/Edit Assignment Screen -->
+		<div data-role="page" id="addAssignment" data-theme="a">
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
+				<hr>
+				<div><p class="displaying">Add New Assignment</p></div>
+			</div>
+			<div data-role="content">
+			
+<!-- 
+				<label for="noteDesc">Description</label>
+				<textarea name="noteDesc" id="noteDesc" value=""></textarea>
+				<label for="noteDateDue">Date Due:</label>
+				<input type="text" name="noteDateDue" value=""/>
+				<label for="noteTimeDue">Time Due:</label>
+				<input type="text" name="noteTimeDue" value=""/>
+				<label for="noteReminder">Reminder</label>
+				<select name="noteReminder" id="noteReminder" data-role="slider">
+					<option value="On">On</option>
+					<option value="Off">Off</option>
+				</select>
+-->
+		   	</div>
+			<div data-role="footer" data-id="myfooter" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#assignments" data-role="button" id="saveAssignment" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
+					</ul>
+				</div>
+			</div>
+		</div>
 		
 <!-- Courses Screen -->
 		<div data-role="page" id="courses" data-theme="a">
@@ -107,7 +132,7 @@
 			</div>
 		</div>
 		
-<!-- Add New Note Screen -->
+<!-- Add/Edit Note Screen -->
 		<div data-role="page" id="addnote" data-theme="a">
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
