@@ -64,11 +64,11 @@ function doDeleteNotes(e) {
 }
 
 function renderEntries(tx,results) {
-	alert("render entries reached");
+	//alert("render entries reached");
 	var $content = $('#assignmentContent');
 	if (results.rows.length === 0) { $content.html('<p>You do not have any notes currently</p>'); }
 	else {
-		var s = '';
+		var s = "";
 		for (var i=0; i<results.rows.length; i++) {
 			var id = results.rows.item(i).id,
 				title = results.rows.item(i).title;
@@ -97,7 +97,7 @@ function saveAssignment(note,cb) {
 
 function setupTable(tx) {
 	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(id INTEGER PRIMARY KEY,title,body,updated)");
-	alert("setup table done");
+	//alert("setup table done");
 }
 
 //TODO: calculate numbers!
@@ -121,8 +121,9 @@ function onFSSuccess(fs) {
 	getById("#deleteNotes").addEventListener("touchstart",doDeleteNotes);
 	getById('#saveAssignment').addEventListener("touchstart",saveAssignment);
 	
-    dbShell = window.openDatabase("ezbrzy_db","1.0","EzBrzy Database",1000000);
+    dbShell = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
     dbShell.transaction(setupTable,dbErrorHandler,getEntries);
+    
 /*	
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
     getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
