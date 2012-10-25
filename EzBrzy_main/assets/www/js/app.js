@@ -65,16 +65,20 @@ function doDeleteNotes(e) {
 
 function renderEntries(tx,results) {
 	//alert("render entries reached");
-	var $content = $('#assignmentContent');
+	var $content = $('#assignmentContent'),
+		id,
+		title;
 	if (results.rows.length === 0) { $content.html('<p>You do not have any notes currently</p>'); }
 	else {
 		var s = "";
 		for (var i=0; i<results.rows.length; i++) {
-			var id = results.rows.item(i).id,
-				title = results.rows.item(i).title;
+			id = results.rows.item(i).id;
+			title = results.rows.item(i).title;
 			s += '<li><a href="#addAssignment" data-role="button" data-transition="none" data-direction="reverse">' + id + " - " + title + '</a></li>';
 //			s += "<li><a href='edit.html?id="+results.rows.item(i).id + "'>" + results.rows.item(i).title + "</a></li>"; //pick up here!!
 		}
+		id = null;
+		title = null;
 		$content.html(s)
 			.listview('refresh');
 	}
@@ -123,6 +127,17 @@ function onFSSuccess(fs) {
 	
     dbShell = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
     dbShell.transaction(setupTable,dbErrorHandler,getEntries);
+    
+    //handle form submission of a new/old note
+    $("#editNoteForm").live("submit",function(e) {
+        var data = {title:$("#assignDesc").val(), 
+                    body:$("#assignDateDue").val(),
+                    id:$("#noteId").val()
+        };
+    saveAssignment(data,function() {
+        $.mobile.changePage("#assignments",{reverse:true});
+    });
+    });
     
 /*	
     getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
