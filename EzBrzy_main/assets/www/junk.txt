@@ -1,0 +1,46 @@
+//from app.js
+function renderEntries(tx,results) {
+	//alert("render entries reached");
+	var $content = $('#assignmentContent'),
+		id,
+		title;
+	if (results.rows.length === 0) { $content.html('<p>You do not have any notes currently</p>'); }
+	else {
+		var s = "";
+		for (var i=0; i<results.rows.length; i++) {
+			id = results.rows.item(i).id;
+			title = results.rows.item(i).title;
+			s += '<li><a href="#addAssignment" data-role="button" data-transition="none" data-direction="reverse">' + id + " - " + title + '</a></li>';
+	}
+		id = null;
+		title = null;
+		$content.html(s)
+			.listview('refresh');
+	}
+}
+
+getById("#dirListingButton").addEventListener("touchstart",doDirectoryListing);            
+    getById("#addFileButton").addEventListener("touchstart",doAppendFile);            
+    getById("#readFileButton").addEventListener("touchstart",doReadFile);            
+    getById("#metadataFileButton").addEventListener("touchstart",doMetadataFile);            
+    getById("#deleteFileButton").addEventListener("touchstart",doDeleteFile);            
+    getById("#addAlertData").addEventListener("touchstart",doAlertData);
+    
+    //logit( "Got the file system: "+fileSystem.name +" " +
+                                    "root entry name is "+fileSystem.root.name + "<p/>")    
+    doDirectoryListing();
+  
+function logNote(data) {
+	//var output = '<li>' + data + '</li>';
+    $('#noteContent ul').html(data).listview('refresh');
+	//this works too-->//getById("#noteContent ul").innerHTML = data;
+}
+  
+function writeData() {
+	var output="";
+	for (i=0; i<20; i++) { output += "<p>test data ... "+ i + "</p>"; }
+	$("#testData").html(output);
+}
+
+//from index.html
+<div><a data-role="button" id="deleteNotes" class="redButton">DELETE ALL NOTES</a><br></div>
