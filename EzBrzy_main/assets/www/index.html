@@ -145,17 +145,20 @@
 				<div><p class="displaying">Add Other Reminder</p></div>
 			</div>
 			<div data-role="content">
-				<label for="noteDesc">Description</label>
-				<textarea name="noteDesc" id="noteDesc" value=""></textarea>
-				<label for="noteDateDue">Date Due:</label>
-				<input type="text" name="noteDateDue" value=""/>
-				<label for="noteTimeDue">Time Due:</label>
-				<input type="text" name="noteTimeDue" value=""/>
-				<label for="noteReminder">Reminder</label>
-				<select name="noteReminder" id="noteReminder" data-role="slider">
-					<option value="On">On</option>
-					<option value="Off">Off</option>
-				</select>
+				<form id="addNoteForm">
+					<label for="noteDesc">Description</label>
+					<textarea name="noteDesc" id="noteDesc" value=""></textarea>
+					<label for="noteDateDue">Date Due:</label>
+					<input type="text" name="noteDateDue" value=""/>
+					<label for="noteTimeDue">Time Due:</label>
+					<input type="text" name="noteTimeDue" value=""/>
+					<label for="noteReminder">Reminder</label>
+					<select name="noteReminder" id="noteReminder" data-role="slider">
+						<option value="On">On</option>
+						<option value="Off">Off</option>
+					</select>
+				</form>
+				
 		   	</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
