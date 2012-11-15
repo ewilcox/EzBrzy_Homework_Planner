@@ -14,12 +14,13 @@ function dbErrorHandler(err) {
 function getById(id) {
     return document.querySelector(id);
 }
-
-function getEntries() {
+function dbSuccessCB() {
 	alert("db.transaction success");
-//	db.transaction(function(tx) {
-//		tx.executeSql("select id, title, body, updated from notes order by updated desc",[],renderEntries,dbErrorHandler);
-//	}, dbErrorHandler);
+}
+function getEntries() {
+	db.transaction(function(tx) {
+		tx.executeSql("select id, title, body, updated from notes order by updated desc",[],renderEntries,dbErrorHandler);
+	}, dbErrorHandler);
 }
 
 function saveAssignment(note,cb) {
@@ -59,7 +60,7 @@ function displayListing() {
 
 function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
-	db.transaction(setupTable,dbErrorHandler,getEntries);
+	db.transaction(setupTable, dbErrorHandler, dbSuccessCB);
 }
 //this seems to work with the form for submission
 function testSave() {
