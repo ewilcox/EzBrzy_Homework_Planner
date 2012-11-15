@@ -44,3 +44,18 @@ function writeData() {
 
 //from index.html
 <div><a data-role="button" id="deleteNotes" class="redButton">DELETE ALL NOTES</a><br></div>
+
+//post on avoiding default subit action on soft keyboard enter button
+<form class="inputForm" action="doNothing()">
+
+//forms validation
+//look into jquery.validate();
+
+//possible answer to a form submission problem, see url: http://stackoverflow.com/questions/7894774/jquery-code-ajax-form-and-submit-outside-the-form
+// may also need to include:
+$('.button').click(function(e) {
+   e.preventDefault();
+   // Call your AJAX here
+});
+
+

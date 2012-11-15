@@ -52,20 +52,32 @@ function setupDB() {
 	dbShell = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
 	dbShell.transaction(setupTable,dbErrorHandler,getEntries);
 }
-
+//this seems to work with the form for submission
+function testSave() {
+    $('#editAssignmentForm').submit();
+    //alert($('#assignDesc').val());  //<--- this working
+    //alert(data.title);	//<---this not working here
+}
 function onDeviceReady() {
 	setupDB();
 	displayListing();
 //	getById("#saveNote").addEventListener("touchstart",doSaveNote);
 //	getById("#deleteNotes").addEventListener("touchstart",doDeleteNotes);
 //	getById('#saveAssignment').addEventListener("touchstart",saveAssignment);
-    //handle form submission of a new/old note
-    
-	$("#editNoteForm").live("submit",function(e) {
+	getById('#saveAssignment').addEventListener("touchstart",testSave);
+	
+//	testing form submit linking outside of form
+//	$("#editAssignmentForm").focus(function () {
+//		alert("form fired");
+//	});
+	
+//not sure if I need this .live section of code still?
+	$("#editAssignmentForm").live("submit",function(e) {
         var data = {title:$("#assignDesc").val(), 
                     body:$("#assignDateDue").val(),
                     id:$("#noteId").val()
         };
+        alert(data.title);  // <--- this IS working with the testSave submit function above.
     saveAssignment(data,function() {
         $.mobile.changePage("#assignments",{reverse:true});
         });
