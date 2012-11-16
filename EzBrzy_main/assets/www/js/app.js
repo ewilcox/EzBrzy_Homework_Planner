@@ -24,7 +24,7 @@ function getEntries() {
 }
 
 function saveAssignment(data,cb) {
-    $('#editAssignmentForm').submit();
+   
 //    if(data.title === "") { data.title = "[No Title]"; }
 //    db.transaction(function(tx) {
 //        if(data.id === "") { tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[data.title,data.body, new Date()]); }
@@ -66,8 +66,10 @@ function setupDB() {
 }
 //this seems to work with the form for submission
 function doSave() {
+	$('#editAssignmentForm').submit();
 	$.mobile.changePage("#assignments");
-    //alert($('#assignDesc').val());  //<--- this working
+    alert(data.title);  //seems to display data in form correctly.
+	//alert($('#assignDesc').val());  //<--- this working
     //alert(data.title);	//<---this not working here
 }
 function onDeviceReady() {
