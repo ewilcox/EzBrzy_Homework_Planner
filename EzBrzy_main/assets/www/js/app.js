@@ -23,13 +23,15 @@ function getEntries() {
 	}, dbErrorHandler);
 }
 
-function saveAssignment(note,cb) {
-    if(note.title === "") { note.title = "[No Title]"; }
-    db.transaction(function(tx) {
-        if(note.id === "") { tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[note.title,note.body, new Date()]); }
-        else { tx.executeSql("update notes set title=?, body=?, updated=? where id=?",[note.title,note.body, new Date(), note.id]); }
-    }, dbErrorHandler,cb);
-    getEntries();
+function saveAssignment(data,cb) {
+    $('#editAssignmentForm').submit();
+//    if(data.title === "") { data.title = "[No Title]"; }
+//    db.transaction(function(tx) {
+//        if(data.id === "") { tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[data.title,data.body, new Date()]); }
+//        else { tx.executeSql("update notes set title=?, body=?, updated=? where id=?",[data.title,data.body, new Date(), data.id]); }
+//    }, dbErrorHandler,dbSuccessCB);
+    alert(data.title);
+    //getEntries();
 }
 
 function setupTable(tx) {
@@ -63,15 +65,15 @@ function setupDB() {
 	db.transaction(setupTable, dbErrorHandler, dbSuccessCB);
 }
 //this seems to work with the form for submission
-function testSave() {
-    $('#editAssignmentForm').submit();
+function doSave() {
+	$.mobile.changePage("#assignments");
     //alert($('#assignDesc').val());  //<--- this working
     //alert(data.title);	//<---this not working here
 }
 function onDeviceReady() {
 	setupDB();
 	displayListing();
-	getById('#saveAssignment').addEventListener("touchstart",testSave);
+	getById('#saveAssignment').addEventListener("touchstart",doSave);
 	
 //not sure if I need this .live section of code still?
 	$("#editAssignmentForm").live("submit",function(e) {
@@ -79,11 +81,11 @@ function onDeviceReady() {
                     body:$("#assignDateDue").val(),
                     id:$("#noteId").val()
         };
-        alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
-//    saveAssignment(data,function() {
-//        $.mobile.changePage("#assignments",{reverse:true});
-//        });
+        //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
+        saveAssignment(data,function() {
+        $.mobile.changePage("#assignments",{reverse:true});
         });
+	});
 }
 
 function init() {
