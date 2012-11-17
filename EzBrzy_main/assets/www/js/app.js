@@ -23,14 +23,24 @@ function getEntries() {
 	}, dbErrorHandler);
 }
 
-function saveAssignment(data,cb) {
-   
+function saveAssignment() {  // took (data,cb) out of parameter list
+	db.transaction(function(tx) {
+		var id = 1,
+			name = "test",
+			loc = "none",
+			due = "some date",
+			time = "some time",
+			rem = "none",
+			note = "none";
+		
+		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (id, name, loc, due, time, rem, note)');
+	}, dbErrorHandler, dbSuccessCB);
 //    if(data.title === "") { data.title = "[No Title]"; }
 //    db.transaction(function(tx) {
 //        if(data.id === "") { tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[data.title,data.body, new Date()]); }
 //        else { tx.executeSql("update notes set title=?, body=?, updated=? where id=?",[data.title,data.body, new Date(), data.id]); }
 //    }, dbErrorHandler,dbSuccessCB);
-    alert(data.title);
+//    alert(data.title);
     //getEntries();
 }
 
@@ -68,7 +78,8 @@ function setupDB() {
 function doSave() {
 	$('#editAssignmentForm').submit();
 	$.mobile.changePage("#assignments");
-    alert(data.title);  //seems to display data in form correctly.
+	saveAssignment();
+	//alert(data.title);  //seems to display data in form correctly.
 	//alert($('#assignDesc').val());  //<--- this working
     //alert(data.title);	//<---this not working here
 }
