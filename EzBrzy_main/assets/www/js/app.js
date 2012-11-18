@@ -97,7 +97,7 @@ function onDeviceReady() {
 		displayListing();
 	});
 	
-	$('.historyBack').live('tap',function() {
+	$('.ui-btn-back').live('tap',function() {
 		history.back();
 		return false;
 	}).live('click',function() {
