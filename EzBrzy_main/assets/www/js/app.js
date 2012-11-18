@@ -105,6 +105,18 @@ function onDeviceReady() {
 	}).live('click',function() {
 		return false;
 	});
+	
+	//date picker function
+	$(function(){
+	    $('.dateScroller').scroller({
+	        preset: 'date',
+	        invalid: '',
+	        theme: 'default',
+	        display: 'inline',
+	        mode: 'scroller',
+	        dateOrder: 'mmD ddyy'
+	    });    
+	});
 }
 
 function init() {
