@@ -36,7 +36,8 @@
         <activity
             android:name=".EzBrzy_Main"
             android:label="@string/title_activity_ez_brzy__main"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -13,6 +13,7 @@
 <script type="text/javascript" charset="utf-8" src="js/cordova-2.0.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.2.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.validation.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
 
 </head>
@@ -37,7 +38,7 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#addAssignment" data-role="button" data-transition="none" data-direction="reverse">Add New Assignment</a>
+						<li><a href="#chooseCourse" data-role="button" data-transition="none" data-direction="reverse">Add New Assignment</a>
 					</ul>
 				</div>
 			</div>
@@ -98,15 +99,45 @@
 			</div>
 			<div data-role="content" class="myContent">
 				<h2>Course Content Here</h2>
-				<ul data-role="listview"><li><a href="">test link</a></ul>
+				<ul data-role="listview"><li><a href="#">test link</a></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-role="button" data-transition="none" data-direction="reverse">Add New Course</a>
+						<li><a href="#addCourse" data-role="button" data-transition="none" data-direction="reverse">Add New Course</a>
 					</ul>
 				</div>
 			</div>
+		</div>
+		
+<!-- Choose Course Screen -->
+		<div data-role="page" id="chooseCourse" data-theme="a">
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
+				<div data-role="navbar">
+					<ul>
+		       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/assignments.png" height=36px width=36px/><br>Assignments</a></li>
+		       			<li><a href="#courses"  data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/courses.png" height=36px width=36px/><br>Courses</a></li>
+		       			<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
+		       		</ul>
+				</div>
+			</div>
+			<div data-role="content" class="myContent">
+				<h2>Course Content Here</h2>
+				<ul data-role="listview"><li><a href="#addAssignment">choose course test link</a></ul>
+	   		</div>
+			<div data-role="footer" data-id="myfooter" data-position="fixed">
+				<div data-role="navbar">
+					<div data-role="navbar">
+					<ul>
+						<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#addCourse" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">New Course</a>
+					</ul>
+				</div>
+			</div>
+		</div>
 		</div>
 		
 <!-- Notes Screen -->
@@ -148,9 +179,9 @@
 				<form id="addNoteForm">
 					<label for="noteDesc">Description</label>
 					<textarea name="noteDesc" id="noteDesc" value=""></textarea>
-					<label for="noteDateDue">Date Due:</label>
+					<label for="noteDateDue">Date Due</label>
 					<input type="text" name="noteDateDue" value=""/>
-					<label for="noteTimeDue">Time Due:</label>
+					<label for="noteTimeDue">Time Due</label>
 					<input type="text" name="noteTimeDue" value=""/>
 					<label for="noteReminder">Reminder</label>
 					<select name="noteReminder" id="noteReminder" data-role="slider">
@@ -168,6 +199,42 @@
 				</div>
 			</div>
 		</div>
+		
+<!-- Add/Edit Course Screen -->
+		<div data-role="page" id="addCourse" data-theme="a">
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
+				<hr>
+				<div><p class="displaying">Set Up New Course</p></div>
+			</div>
+			<div data-role="content">
+				<form id="addCourseForm">
+					<label for="courseDesc">Course Title</label>
+					<textarea name="courseDesc" id="courseDesc" value=""></textarea>
+					<label for="courseLoc">Location</label>
+					<textarea name="courseLoc" id="courseLoc" value=""></textarea>
+					<label for="defaultDateDue">Default Date Due</label>
+					<input type="text" name="defaultDateDue" value=""/>
+					<label for="defaultTimeDue">Default Time Due</label>
+					<input type="text" name="defaultTimeDue" value=""/>
+					<label for="defaultReminder">Reminder</label>
+					<select name="defaultReminder" id="defaultReminder" data-role="slider">
+						<option value="On">On</option>
+						<option value="Off">Off</option>
+					</select>
+					<label for="courseInfo">Additional Course Info</label>
+					<textarea name="courseInfo" id="courseInfo"></textarea>
+				</form>
+		   	</div>
+			<div data-role="footer" data-id="myfooter" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#notes" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
 	</body>
 
 </html>
