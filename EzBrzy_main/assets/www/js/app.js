@@ -1,4 +1,4 @@
-var db;
+var db, data, outputAssign, outputCourses, outputNotes,numAssignments, numCourses, numNotes;
 
 //generic error handler
 function onError(e) {
@@ -17,15 +17,10 @@ function getById(id) {
 function dbSuccessCB() {
 	alert("db.transaction success");
 }
-function getEntries() {
-	db.transaction(function(tx) {
-		tx.executeSql("select id, title, body, updated from notes order by updated desc",[],renderEntries,dbErrorHandler);
-	}, dbErrorHandler);
-}
 
 function saveAssignment() {  // took (data,cb) out of parameter list
 	db.transaction(function(tx) {
-		var id = 1,
+		var id = 4,
 			name = "test",
 			loc = "none",
 			due = "some date",
@@ -33,7 +28,7 @@ function saveAssignment() {  // took (data,cb) out of parameter list
 			rem = "none",
 			note = "none";
 		
-		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (id, name, loc, due, time, rem, note)');
+		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?,?)',[id,name,loc,due,time,rem,note]);
 	}, dbErrorHandler, dbSuccessCB);
 //    if(data.title === "") { data.title = "[No Title]"; }
 //    db.transaction(function(tx) {
@@ -59,8 +54,12 @@ function setupTable(tx) {
 
 //TODO: calculate numbers!
 function displayListing() {
-	var outputAssign='', outputCourses='', outputNotes='', 
-		numAssignments = 0, numCourses=0, numNotes=0;
+	outputAssign='';
+	outputCourses='';
+	outputNotes='';
+	numAssignments = 0;
+	numCourses=0;
+	numNotes=0;
 	outputAssign += 'Displaying '+ numAssignments + ' Assignment(s)';
 	outputCourses += 'Displaying '+ numCourses + ' Course(s)';
 	outputNotes += 'Displaying '+ numNotes + ' Note(s)';
@@ -69,16 +68,28 @@ function displayListing() {
 	$('#notesDisplay').html(outputNotes);
 	//doReadNotes();	//TODO: should go away
 }
-
+function renderEntries(tx, results) {
+	var i;
+	for (i=0; i<results.rows.length; i++) {
+		alert(results.rows.item(i).cid);
+	}
+}
+function getAssignment() {
+	db.transaction(function(tx) {
+		tx.executeSql("SELECT cid, cname, cloc, cdue, ctime, crem, cnote FROM courses",[],renderEntries,dbErrorHandler);
+	}, dbErrorHandler);
+}
 function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
-	db.transaction(setupTable, dbErrorHandler, dbSuccessCB);
+	db.transaction(setupTable, dbErrorHandler);
 }
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
 	$.mobile.changePage("#assignments");
-	saveAssignment();
+	getAssignment();
+	//saveAssignment();  //<---not sure, but this may be working
+	
 	//alert(data.title);  //seems to display data in form correctly.
 	//alert($('#assignDesc').val());  //<--- this working
     //alert(data.title);	//<---this not working here
@@ -90,14 +101,15 @@ function onDeviceReady() {
 	
 //not sure if I need this .live section of code still?
 	$("#editAssignmentForm").live("submit",function(e) {
-        var data = {title:$("#assignDesc").val(), 
-                    body:$("#assignDateDue").val(),
-                    id:$("#noteId").val()
+        data = {desc:$("#assignDesc").val(), 
+                    due:$("#assignDateDue").val(),
+                    time:$("#assignTimeDue").val()
         };
         //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
-        saveAssignment(data,function() {
-        $.mobile.changePage("#assignments",{reverse:true});
-        });
+	});
+	
+	$('div').live('pageshow', function() {
+		displayListing();
 	});
 }
 
