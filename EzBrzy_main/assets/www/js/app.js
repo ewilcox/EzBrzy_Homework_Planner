@@ -99,6 +99,13 @@ function onDeviceReady() {
         $.mobile.changePage("#assignments",{reverse:true});
         });
 	});
+	
+	$('.ui-btn-back').live('tap',function() {
+		history.back();
+		return false;
+	}).live('click',function() {
+		return false;
+	});
 }
 
 function init() {
