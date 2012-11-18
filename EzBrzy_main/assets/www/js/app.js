@@ -7,14 +7,13 @@ function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 
 function saveAssignment() {  // took (data,cb) out of parameter list
 	db.transaction(function(tx) {
-		var id = 4,
+		var id = 1,
 			name = "test",
 			loc = "none",
 			due = "some date",
 			time = "some time",
 			rem = "none",
 			note = "none";
-		
 		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?,?)',[id,name,loc,due,time,rem,note]);
 	}, dbErrorHandler, dbSuccessCB);
 //    if(data.title === "") { data.title = "[No Title]"; }
@@ -67,13 +66,13 @@ function getAssignment() {
 	}, dbErrorHandler);
 }
 function setupDB() {
-	db = window.openDatabase("ezbrzy.db","1.0","EzBrzy Database",1000000);
+	db = window.openDatabase("ez.db","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
-	$.mobile.changePage("#assignments");
+	document.location.href="#assignments";
 	//getAssignment();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
@@ -86,7 +85,6 @@ function onDeviceReady() {
 	displayListing();
 	getById('#saveAssignment').addEventListener("touchstart",doSave);
 	
-//not sure if I need this .live section of code still?
 	$("#editAssignmentForm").live("submit",function(e) {
         data = {desc:$("#assignDesc").val(), 
                     due:$("#assignDateDue").val(),
@@ -95,27 +93,15 @@ function onDeviceReady() {
         //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
 	});
 	
-	$('div').live('pageshow', function() {
+	$('.mainPage').live('pageshow', function () {
 		displayListing();
 	});
 	
-	$('.ui-btn-back').live('tap',function() {
+	$('.historyBack').live('tap',function() {
 		history.back();
 		return false;
 	}).live('click',function() {
 		return false;
-	});
-	
-	//date picker function
-	$(function(){
-	    $('.dateScroller').scroller({
-	        preset: 'date',
-	        invalid: '',
-	        theme: 'default',
-	        display: 'inline',
-	        mode: 'scroller',
-	        dateOrder: 'mmD ddyy'
-	    });    
 	});
 }
 
