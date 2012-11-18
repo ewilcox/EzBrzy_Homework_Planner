@@ -1,22 +1,9 @@
 var db, data, outputAssign, outputCourses, outputNotes,numAssignments, numCourses, numNotes;
 
-//generic error handler
-function onError(e) {
-    alert("Error: "+e.toString());
-	//getById("#content").innerHTML = "<h2>Error</h2>"+e.toString();
- }
-
-function dbErrorHandler(err) {
-	alert("DB Error : " + err.message + "\n\nCode=" + err.code);
-}
-
-//generic getById
-function getById(id) {
-    return document.querySelector(id);
-}
-function dbSuccessCB() {
-	alert("db.transaction success");
-}
+function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
+function getById(id) { return document.querySelector(id); }
+function dbSuccessCB() { alert("db.transaction success"); }
+function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 
 function saveAssignment() {  // took (data,cb) out of parameter list
 	db.transaction(function(tx) {
@@ -76,19 +63,19 @@ function renderEntries(tx, results) {
 }
 function getAssignment() {
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT cid, cname, cloc, cdue, ctime, crem, cnote FROM courses",[],renderEntries,dbErrorHandler);
+		tx.executeSql("SELECT cid, cname, cloc, cdue, ctime, crem, cnote FROM courses",[],renderEntries,dbQueryError);
 	}, dbErrorHandler);
 }
 function setupDB() {
-	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
+	db = window.openDatabase("ezbrzy.db","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
 	$.mobile.changePage("#assignments");
-	getAssignment();
-	//saveAssignment();  //<---not sure, but this may be working
+	//getAssignment();  //<--- is working but don't want it here I think
+	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
 	//alert(data.title);  //seems to display data in form correctly.
 	//alert($('#assignDesc').val());  //<--- this working
