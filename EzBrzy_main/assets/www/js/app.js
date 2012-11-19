@@ -66,13 +66,13 @@ function getAssignment() {
 	}, dbErrorHandler);
 }
 function setupDB() {
-	db = window.openDatabase("ez.db","1.0","EzBrzy Database",1000000);
+	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
-	document.location.href="#assignments";
+	$.mobile.pageshow("#assignments");
 	//getAssignment();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
@@ -94,10 +94,11 @@ function onDeviceReady() {
 	});
 	
 	$('.mainPage').live('pageshow', function () {
+		alert("pageshow");
 		displayListing();
 	});
 	
-	$('.ui-btn-back').live('tap',function() {
+	$('.historyBack').live('tap',function() {
 		history.back();
 		return false;
 	}).live('click',function() {

@@ -22,7 +22,7 @@
 <body onload="init();">
 
 <!-- Assignments Screen -->
-		<div data-role="page" id="assignments" data-theme="a">
+		<div data-role="page" class="mainPage" id="assignments" data-theme="a">
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<div data-role="navbar">
 					<ul>
@@ -36,7 +36,9 @@
 				</div>
 				<p id="assignmentsDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content" id="assignmentContent" class="myContent"></div>
+			<div data-role="content" id="assignmentContent" class="myContent">
+				<p>some data here</p>
+			</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
@@ -73,15 +75,15 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul> 
-						<li><a href="#" class="ui-btn-back" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>	
-						<li><a href="#" data-role="button" id="saveAssignment" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
+						<li><a href="" class="historyBack" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>	
+						<li><a href="" data-role="button" id="saveAssignment" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
 					</ul>
 				</div>
 			</div>
 		</div>
 		
 <!-- Courses Screen -->
-		<div data-role="page" id="courses" data-theme="a">
+		<div data-role="page" class="mainPage" id="courses" data-theme="a">
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<div data-role="navbar">
 					<ul>
@@ -123,14 +125,14 @@
 				</div>
 			</div>
 			<div data-role="content" class="myContent">
-				<h2>Course Content Here</h2>
+				<h3>Choose course to add assignment to</h3>
 				<ul data-role="listview"><li><a href="#addAssignment">choose course test link</a></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<div data-role="navbar">
 					<ul>
-						<li><a href="#" class="ui-btn-back" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#" class="historyBack" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
 						<li><a href="#addCourse" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">New Course</a>
 					</ul>
 				</div>
@@ -139,7 +141,7 @@
 		</div>
 		
 <!-- Notes Screen -->
-		<div data-role="page" id="notes" data-theme="a">
+		<div data-role="page" class="mainPage" id="notes" data-theme="a">
 		<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 			<div data-role="navbar">
 				<ul>
@@ -194,7 +196,7 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" class="ui-btn-back" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#" class="historyBack" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
 						<li><a href="#notes" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
 					</ul>
 				</div>
@@ -229,7 +231,7 @@
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" class="ui-btn-back" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
+						<li><a href="#" class="historyBack" data-role="button" data-transition="none" data-direction="reverse" data-icon="arrow-l">Back</a>
 						<li><a href="#notes" data-role="button" id="saveNote" data-transition="none" data-direction="reverse" data-icon="check">Save</a>
 					</ul>
 				</div>
