@@ -72,13 +72,12 @@ function setupDB() {
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
-	$.mobile.pageshow("#assignments");
+	$.mobile.changePage("index.html#assignments");  //maybe consider .loadPage('#assignments'); instead to reload header section?
 	//getAssignment();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
 	//alert(data.title);  //seems to display data in form correctly.
 	//alert($('#assignDesc').val());  //<--- this working
-    //alert(data.title);	//<---this not working here
 }
 function onDeviceReady() {
 	setupDB();
@@ -94,7 +93,6 @@ function onDeviceReady() {
 	});
 	
 	$('.mainPage').live('pageshow', function () {
-		alert("pageshow");
 		displayListing();
 	});
 	
