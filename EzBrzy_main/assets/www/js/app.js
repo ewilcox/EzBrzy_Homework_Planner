@@ -102,6 +102,7 @@ function onDeviceReady() {
 	}).live('click',function() {
 		return false;
 	});
+
 	//date picker function
 	$(function(){
 	    $('.dateScroller').scroller({
