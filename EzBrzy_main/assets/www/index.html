@@ -27,11 +27,11 @@
 				<div data-role="navbar">
 					<ul>
 		       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/assignments.png" height=36px width=36px/><br>Assignments</a></li>
+		       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
 		       			<li><a href="#courses" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/courses.png" height=36px width=36px/><br>Courses</a></li>
+		       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
 		       			<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
+		       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
 		       		</ul>
 				</div>
 				<p id="assignmentsDisplay" class="displaying"></p>
@@ -55,7 +55,7 @@
 				<div><p class="displaying">Add New Assignment</p></div>
 			</div>
 			<div data-role="content">
-				<form action="" method="post" id="editAssignmentForm">
+				<form id="editAssignmentForm">
 					<input type="hidden" name="noteId" id="noteId" value="">
 					<div data-role="fieldcontain">
 						<label for="assignDesc">Description</label>
@@ -88,11 +88,11 @@
 				<div data-role="navbar">
 					<ul>
 		       			<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/assignments.png" height=36px width=36px/><br>Assignments</a></li>
+		       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
 		       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/courses.png" height=36px width=36px/><br>Courses</a></li>
+		       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
 		       			<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
+		       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
 		       		</ul>
 				</div>
 				<p id="coursesDisplay" class="displaying"></p>
@@ -115,12 +115,12 @@
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<div data-role="navbar">
 					<ul>
-		       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/assignments.png" height=36px width=36px/><br>Assignments</a></li>
+		       			<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
 		       			<li><a href="#courses"  data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/courses.png" height=36px width=36px/><br>Courses</a></li>
+		       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
 		       			<li><a href="#notes" data-role="button" data-transition="none" data-direction="reverse">
-		       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
+		       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
 		       		</ul>
 				</div>
 			</div>
@@ -146,11 +146,11 @@
 			<div data-role="navbar">
 				<ul>
 	       			<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/assignments.png" height=36px width=36px/><br>Assignments</a></li>
+	       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
 	       			<li><a href="#courses" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/courses.png" height=36px width=36px/><br>Courses</a></li>
+	       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
 	       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/notes.png" height=36px width=36px/><br><div>Other Reminders</div></a></li>
+	       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
 	       		</ul>
 			</div>
 			<p id="notesDisplay" class="displaying"></p>
@@ -178,11 +178,11 @@
 			<div data-role="content">
 				<form id="addNoteForm">
 					<label for="noteDesc">Description</label>
-					<textarea name="noteDesc" id="noteDesc" value=""></textarea>
+					<textarea name="noteDesc" id="noteDesc"></textarea>
 					<label for="noteDateDue">Date Due</label>
-					<input type="text" name="noteDateDue" value=""/>
+					<input type="text" name="noteDateDue" id="noteDateDue"/>
 					<label for="noteTimeDue">Time Due</label>
-					<input type="text" name="noteTimeDue" value=""/>
+					<input type="text" name="noteTimeDue" id="noteTimeDue"/>
 					<label for="noteReminder">Reminder</label>
 					<select name="noteReminder" id="noteReminder" data-role="slider">
 						<option value="On">On</option>
@@ -190,7 +190,7 @@
 					</select>
 					<br/><br/>
 					<label for="occurance">Occurance</label>
-					<input type ="text" name="occurance" value=""/>
+					<input type ="text" name="occurance" id="occurance" />
 				</form>
 		   	</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
@@ -212,13 +212,13 @@
 			<div data-role="content">
 				<form id="addCourseForm">
 					<label for="courseDesc">Course Title</label>
-					<textarea name="courseDesc" id="courseDesc" value=""></textarea>
+					<textarea name="courseDesc" id="courseDesc"></textarea>
 					<label for="courseLoc">Location</label>
-					<textarea name="courseLoc" id="courseLoc" value=""></textarea>
+					<textarea name="courseLoc" id="courseLoc" ></textarea>
 					<label for="defaultDateDue">Default Date Due</label>
-					<input type="text" name="defaultDateDue" value=""/>
+					<input type="text" name="defaultDateDue" id="defaultDateDue" />
 					<label for="defaultTimeDue">Default Time Due</label>
-					<input type="text" name="defaultTimeDue" value=""/>
+					<input type="text" name="defaultTimeDue" id="defaultTimeDue" />
 					<label for="defaultReminder">Reminder</label>
 					<select name="defaultReminder" id="defaultReminder" data-role="slider">
 						<option value="On">On</option>
