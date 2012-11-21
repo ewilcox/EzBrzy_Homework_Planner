@@ -72,7 +72,7 @@ function setupDB() {
 //this seems to work with the form for submission
 function doSave() {
 	$('#editAssignmentForm').submit();
-	$.mobile.changePage("index.html#assignments");  //maybe consider .loadPage('#assignments'); instead to reload header section?
+//	$.mobile.changePage('#assignments');  //maybe consider .loadPage('index.html#assignments'); instead to reload header section?
 	//getAssignment();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
@@ -82,15 +82,15 @@ function doSave() {
 function onDeviceReady() {
 	setupDB();
 	displayListing();
-	getById('#saveAssignment').addEventListener("touchstart",doSave);
+	getById('#saveAssignment').addEventListener("click",doSave);
 	
-	$("#editAssignmentForm").live("submit",function(e) {
-        data = {desc:$("#assignDesc").val(), 
-                    due:$("#assignDateDue").val(),
-                    time:$("#assignTimeDue").val()
-        };
-        //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
-	});
+//	$("#editAssignmentForm").live("submit",function(e) {
+//        data = {desc:$("#assignDesc").val(), 
+//                    due:$("#assignDateDue").val(),
+//                    time:$("#assignTimeDue").val()
+//        };
+//        //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
+//	});
 	
 	$('.mainPage').live('pageshow', function () {
 		displayListing();
