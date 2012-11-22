@@ -47,7 +47,6 @@ function setupTable(tx) {
 	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(nid INTEGER PRIMARY KEY, ndesc TEXT NOT NULL, ndue, ntime, nrem, nooc)");
 }
 
-//TODO: calculate numbers!
 function displayListing (location, results) {
 	var output = '';
 	output += 'Displaying '+ results.rows.length + ' Item(s)';
@@ -60,18 +59,28 @@ function renderEntries(tx, results) {
 		alert(results.rows.item(i).cid);
 	}
 }
+function editCourse (course) {
+	
+}
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
 	//fill in output and .html to index.html correct location
 }
 function populateCourses (tx, results) {
 	displayListing('#coursesDisplay', results);
+	courseCount = results.rows.length;
 	var output = '',
-		i;
-	for (i=0; i<results.rows.length; i++) {
-		alert(results.rows.item(i).cid);
+		i, count;
+	count = results.rows.length;
+	if (!count) {
+		output = '<h3>Add Courses Below</h3>';
+	} else {
+		for (i=0; i<results.rows.length; i++) { //<li><a href="#addCourse" data-role="button" id="newCourseFromAssignments" data-transition="none" data-direction="reverse" data-icon="check">New Course</a>
+			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">test'+ results.rows.item(i).cname +'</a></li>';
+		}
 	}
-	
+	//alert(results.rows.item(0).cid + ' name: ' + results.rows.item(0).cname);
+	$('#courseData').html(output).listview('refresh');
 }
 function populateNotes (tx, results) {
 	displayListing('#notesDisplay', results);
