@@ -57,8 +57,3 @@ $('.button').click(function(e) {
    e.preventDefault();
    // Call your AJAX here
 });
-
-
-erics different data
-cora's data
-erics data

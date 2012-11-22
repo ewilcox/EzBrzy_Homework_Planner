@@ -1,4 +1,5 @@
-var db, data, outputAssign, outputCourses, outputNotes,numAssignments, numCourses, numNotes;
+var db, data, outputAssign, outputCourses, outputNotes,numAssignments, numCourses, numNotes,
+	assignmentCount, courseCount, noteCount;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -60,20 +61,36 @@ function renderEntries(tx, results) {
 		alert(results.rows.item(i).cid);
 	}
 }
-function getAssignment() {
+function populateAssignments (tx,results) {
+	//fill in output and .html to index.html correct location
+	alert("Assignments count: " + results.rows.length);
+}
+function populateCourses () {
+	//fill in output and .html to index.html correct location
+	alert("Courses count: " + results.rows.length);
+}
+function populateNotes () {
+	//fill in output and .html to index.html correct location
+	alert("Notes count: " + results.rows.length);
+}
+function getAssignments() {
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT cid, cname, cloc, cdue, ctime, crem, cnote FROM courses",[],renderEntries,dbQueryError);
+		tx.executeSql("SELECT * FROM assignments", [], function (tx, results) { assignmentCount = results.rows.length; }, dbQueryError);
+		tx.executeSql("SELECT * FROM courses", [], function (tx, results) { courseCount = results.rows.length; }, dbQueryError);
+		tx.executeSql("SELECT * FROM notes", [], function (tx, results) { noteCount = results.rows.length; }, dbQueryError);
 	}, dbErrorHandler);
+	if (assignmentCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM assignments", [], populateAssignments, dbQueryError); });	}   //else alert('no assignments');
+	if (courseCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM courses", [], populateCourses, dbQueryError); });	}   //else alert('no courses');
+	if (noteCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM notes", [], populateNotes, dbQueryError); });	}   //else alert('no notes');
 }
 function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
-//this seems to work with the form for submission
+
 function doSave() {
 	$('#editAssignmentForm').submit();
-//	$.mobile.changePage('#assignments');  //maybe consider .loadPage('index.html#assignments'); instead to reload header section?
-	//getAssignment();  //<--- is working but don't want it here I think
+	//getAssignments();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
 	//alert(data.title);  //seems to display data in form correctly.
@@ -82,18 +99,20 @@ function doSave() {
 function onDeviceReady() {
 	setupDB();
 	displayListing();
+	getAssignments();
 	getById('#saveAssignment').addEventListener("click",doSave);
 	
-//	$("#editAssignmentForm").live("submit",function(e) {
-//        data = {desc:$("#assignDesc").val(), 
-//                    due:$("#assignDateDue").val(),
-//                    time:$("#assignTimeDue").val()
-//        };
-//        //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
-//	});
+	$("#editAssignmentForm").live("submit",function(e) {
+        data = {desc:$("#assignDesc").val(), 
+                    due:$("#assignDateDue").val(),
+                    time:$("#assignTimeDue").val()
+        };
+	});
 	
 	$('.mainPage').live('pageshow', function () {
 		displayListing();
+		getAssignments();
+		//alert("Assignments: "+ assignmentCount +"\nCourses: "+courseCount+"\nNotes: "+noteCount);
 	});
 	
 	$('.historyBack').live('tap',function() {
