@@ -90,7 +90,6 @@ function setupDB() {
 
 function doSave() {
 	$('#editAssignmentForm').submit();
-	//getAssignments();  //<--- is working but don't want it here I think
 	//saveAssignment();  //<--- is working but saveAssignment not adding correctly yet so keep commented out for now.
 	
 	//alert(data.title);  //seems to display data in form correctly.
@@ -128,11 +127,41 @@ function onDeviceReady() {
 	        preset: 'date',
 	        invalid: '',
 	        theme: 'default',
-	        display: 'inline',
+	        display: 'modal',
 	        mode: 'scroller',
 	        dateOrder: 'mmD ddyy'
-	    });    
+	    });
+	    
+	    $('#assignDateDue').click(function(){
+	        $('.dateScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#noteDateDue').click(function(){
+	        $('.dateScroller').scroller('show'); 
+	        return false;
+	    });
+	    
 	});
+	
+	//time picker function
+	$(function(){
+	    $('.timeScroller').scroller({
+	        preset: 'time',
+	        theme: 'default',
+	        display: 'modal',
+	        mode: 'scroller'
+	    });
+	    
+	    $('#assignTimeDue').click(function(){
+	        $('.timeScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#noteTimeDue').click(function(){
+	        $('.timeScroller').scroller('show'); 
+	        return false;
+	    });
+	});
+	
 
 }
 
