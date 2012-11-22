@@ -84,13 +84,13 @@ function onDeviceReady() {
 	displayListing();
 	getById('#saveAssignment').addEventListener("click",doSave);
 	
-//	$("#editAssignmentForm").live("submit",function(e) {
-//        data = {desc:$("#assignDesc").val(), 
-//                    due:$("#assignDateDue").val(),
-//                    time:$("#assignTimeDue").val()
-//        };
-//        //alert(data.title +" : "+data.body);  // <--- this IS working with the testSave submit function above.
-//	});
+	$("#editAssignmentForm").live("submit",function(e) {
+        data = {desc:$("#assignDesc").val(), 
+                    due:$("#assignDateDue").val(),
+                    time:$("#assignTimeDue").val()
+        };
+        //alert("Desc : "+data.desc);  // <--- this IS working with the testSave submit function above.
+	});
 	
 	$('.mainPage').live('pageshow', function () {
 		displayListing();
@@ -109,11 +109,41 @@ function onDeviceReady() {
 	        preset: 'date',
 	        invalid: '',
 	        theme: 'default',
-	        display: 'inline',
+	        display: 'modal',
 	        mode: 'scroller',
 	        dateOrder: 'mmD ddyy'
-	    });    
+	    });
+	    
+	    $('#assignDateDue').click(function(){
+	        $('.dateScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#noteDateDue').click(function(){
+	        $('.dateScroller').scroller('show'); 
+	        return false;
+	    });
+	    
 	});
+	
+	//time picker function
+	$(function(){
+	    $('.timeScroller').scroller({
+	        preset: 'time',
+	        theme: 'default',
+	        display: 'modal',
+	        mode: 'scroller'
+	    });
+	    
+	    $('#assignTimeDue').click(function(){
+	        $('.timeScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#noteTimeDue').click(function(){
+	        $('.timeScroller').scroller('show'); 
+	        return false;
+	    });
+	});
+	
 
 }
 

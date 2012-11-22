@@ -63,12 +63,12 @@
 					</div>
 					<div data-role="fieldcontain">
 						<label for="assignDateDue">Date Due:</label>
-						<input class="dateScroller" id="assignDateDue" name="scroller" style="display:none" />
-						
+						<input class="dateScroller" id="assignDateDue" name="scroller" />
+						   
 					</div>
 					<div data-role="fieldcontain">
 						<label for="assignTimeDue">Time Due:</label>
-						<input type="text" name="assignTimeDue" id="assignTimeDue" />
+						<input class="timeScroller" name="scroller" id="assignTimeDue" />
 					</div>
 				</form>
 		   	</div>
@@ -180,9 +180,9 @@
 					<label for="noteDesc">Description</label>
 					<textarea name="noteDesc" id="noteDesc"></textarea>
 					<label for="noteDateDue">Date Due</label>
-					<input type="text" name="noteDateDue" id="noteDateDue"/>
+					<input class="dateScroller" name="noteDateDue" id="noteDateDue"/>
 					<label for="noteTimeDue">Time Due</label>
-					<input type="text" name="noteTimeDue" id="noteTimeDue"/>
+					<input class="timeScroller" name="noteTimeDue" id="noteTimeDue"/>
 					<label for="noteReminder">Reminder</label>
 					<select name="noteReminder" id="noteReminder" data-role="slider">
 						<option value="On">On</option>
