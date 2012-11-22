@@ -107,6 +107,8 @@ function onDeviceReady() {
                 due:$("#assignDateDue").val(),
                 time:$("#assignTimeDue").val()
         };
+        //reset all the values
+        $('#editAssignmentForm').each (function(){this.reset();});
 	});
 	$("#addCourseForm").live("submit",function(e) {
         data = {name:$("#courseName").val(), 
@@ -116,6 +118,8 @@ function onDeviceReady() {
                 rem:$("#defaultReminder").val(),
                 note:$("#courseNote").val()
         };
+        //reset all the values
+        $('#addCourseForm').each (function(){this.reset();});
 	});
 	
 	$('.mainPage').live('pageshow', function () {
@@ -197,7 +201,7 @@ function onDeviceReady() {
 	
 	});
 	
-	//function for default values
+//function for setting default values
 	
 	$(function() {
 	    $('.defaults')
