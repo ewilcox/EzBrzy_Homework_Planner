@@ -64,6 +64,7 @@ function editCourse (course) {
 }
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
+	assignmentCount = results.rows.length;
 	//fill in output and .html to index.html correct location
 }
 function populateCourses (tx, results) {
@@ -72,19 +73,29 @@ function populateCourses (tx, results) {
 	var output = '',
 		i, count;
 	count = results.rows.length;
-	if (!count) {
+	if (count === 0) {
 		output = '<h3>Add Courses Below</h3>';
 	} else {
-		for (i=0; i<results.rows.length; i++) { //<li><a href="#addCourse" data-role="button" id="newCourseFromAssignments" data-transition="none" data-direction="reverse" data-icon="check">New Course</a>
-			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">test'+ results.rows.item(i).cname +'</a></li>';
+		for (i=0; i<results.rows.length; i++) {
+			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
-	//alert(results.rows.item(0).cid + ' name: ' + results.rows.item(0).cname);
 	$('#courseData').html(output).listview('refresh');
 }
 function populateNotes (tx, results) {
 	displayListing('#notesDisplay', results);
-	//fill in output and .html to index.html correct location
+	noteCount = results.rows.length;
+	var output = '',
+	i, count;
+	count = results.rows.length;
+	if (count === 0) {
+		output = '<h3>No Current Notes</h3>';
+	} else {
+		for (i=0; i<results.rows.length; i++) {
+			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).nid +'" onclick="editNote(this);">'+ results.rows.item(i).ndesc +'</a></li>';
+		}
+}
+$('#noteData').html(output).listview('refresh');
 }
 function getDisplays() {
 	db.transaction(function(tx) {
