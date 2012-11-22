@@ -57,7 +57,7 @@
 			<div data-role="content">
 				<form id="editAssignmentForm">
 					<label for="assignDesc">Description</label>
-					<input type="text" name="assignDesc" id="assignDesc" />
+					<input type="text" name="assignDesc" id="assignDesc" class="defaults" value="HW" />
 					<label for="assignDateDue">Date Due:</label>
 					<input class="dateScroller" id="assignDateDue" name="scroller" />			
 					<label for="assignTimeDue">Time Due:</label>
@@ -185,7 +185,7 @@
 			<div data-role="content">
 				<form id="addNoteForm">
 					<label for="noteDesc">Description</label>
-					<textarea name="noteDesc" id="noteDesc"></textarea>
+					<textarea name="noteDesc" id="noteDesc" ></textarea>
 					<label for="noteDateDue">Date Due</label>
 					<input class="dateScroller" name="noteDateDue" id="noteDateDue"/>
 					<label for="noteTimeDue">Time Due</label>
@@ -225,9 +225,9 @@
 			<div data-role="content">
 				<form id="addCourseForm">
 					<label for="courseName">Course Title</label>
-					<textarea name="courseName" id="courseName"></textarea>
+					<input type="text" name="courseName" id="courseName"class="defaults" value="My Course"></input>
 					<label for="courseLoc">Location</label>
-					<textarea name="courseLoc" id="courseLoc" ></textarea>
+					<input type="text" name="courseLoc" id="courseLoc" ></input>
 					<label for="defaultDateDue">Default Date Due</label>
 					<input class="dateScroller" name="defaultDateDue" id="defaultDateDue" />
 					<label for="defaultTimeDue">Default Time Due</label>
