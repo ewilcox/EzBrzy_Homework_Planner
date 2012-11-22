@@ -115,10 +115,14 @@ function onDeviceReady() {
 	    });
 	    
 	    $('#assignDateDue').click(function(){
-	        $('.dateScroller').scroller('show'); 
+	    	$('.dateScroller').scroller('show');
 	        return false;
 	    });
 	    $('#noteDateDue').click(function(){
+	        $('.dateScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#defaultDateDue').click(function(){
 	        $('.dateScroller').scroller('show'); 
 	        return false;
 	    });
@@ -142,6 +146,30 @@ function onDeviceReady() {
 	        $('.timeScroller').scroller('show'); 
 	        return false;
 	    });
+	    $('#defaultTimeDue').click(function(){
+	        $('.timeScroller').scroller('show'); 
+	        return false;
+	    });    
+	});
+	
+	//occurance picker
+	$(function(){
+	    $('.occurScroller').scroller({
+	        preset: 'select',
+	        theme: 'default',
+	        display: 'modal',
+	        mode: 'scroller',
+	        inputClass: 'i-txt'
+	    });
+	    $('#aOccurance').click(function(){
+	        $('.occurScroller').scroller('show'); 
+	        return false;
+	    });
+	    $('#nOccurance').click(function(){
+	        $('.occurScroller').scroller('show'); 
+	        return false;
+	    }); 
+	
 	});
 	
 
