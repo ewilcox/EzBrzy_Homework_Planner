@@ -206,6 +206,28 @@ function onDeviceReady() {
 	
 	});
 	
+	//function for default values
+	
+	$(function() {
+	    $('.defaults')
+		.focus(function() {
+			var $this = $(this);
+			if (!$this.data('default')) { 
+				$this.data('default', $this.val());}
+			if ($this.val() === $this.data('default')) {
+				$this.val('')
+				.css('color', '#ffffff');
+			}
+		})
+		.blur(function() {
+			var $this = $(this);
+			if ($this.val() === '') {
+				$(this).val($this.data('default'))
+				.css('color', '#999999');
+			}
+		})
+		.css('color', '#999999');
+	});
 
 }
 
