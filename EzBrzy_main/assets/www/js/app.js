@@ -1,4 +1,4 @@
-var db, data, outputAssign, outputCourses, outputNotes, assignmentCount, courseCount, noteCount;
+var db, data, assignmentCount, courseCount, noteCount;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -48,44 +48,41 @@ function setupTable(tx) {
 }
 
 //TODO: calculate numbers!
-function displayListing() {
-	outputAssign='';
-	outputCourses='';
-	outputNotes='';
-	if (assignmentCount !== 'undefined') {
-	outputAssign += 'Displaying '+ assignmentCount + ' Assignment(s)';
-	outputCourses += 'Displaying '+ courseCount + ' Course(s)';
-	outputNotes += 'Displaying '+ noteCount + ' Note(s)';
-	}
-	$('#assignmentsDisplay').html(outputAssign);
-	$('#coursesDisplay').html(outputCourses);
-	$('#notesDisplay').html(outputNotes);
+function displayListing (location, results) {
+	var output = '';
+	output += 'Displaying '+ results.rows.length + ' Item(s)';
+	$(location).html(output);
 }
 //Don't think I need this specific function... keep for reference though.
-//function renderEntries(tx, results) {
-//	var i;
-//	for (i=0; i<results.rows.length; i++) {
-//		alert(results.rows.item(i).cid);
-//	}
-//}
+function renderEntries(tx, results) {
+	var i;
+	for (i=0; i<results.rows.length; i++) {
+		alert(results.rows.item(i).cid);
+	}
+}
 function populateAssignments (tx, results) {
+	displayListing('#assignmentsDisplay', results);
 	//fill in output and .html to index.html correct location
 }
 function populateCourses (tx, results) {
-	//fill in output and .html to index.html correct location
+	displayListing('#coursesDisplay', results);
+	var output = '',
+		i;
+	for (i=0; i<results.rows.length; i++) {
+		alert(results.rows.item(i).cid);
+	}
+	
 }
 function populateNotes (tx, results) {
+	displayListing('#notesDisplay', results);
 	//fill in output and .html to index.html correct location
 }
-function getAssignments() {
+function getDisplays() {
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM assignments", [], function (tx, results) { assignmentCount = results.rows.length; }, dbQueryError);
-		tx.executeSql("SELECT * FROM courses", [], function (tx, results) { courseCount = results.rows.length; }, dbQueryError);
-		tx.executeSql("SELECT * FROM notes", [], function (tx, results) { noteCount = results.rows.length; }, dbQueryError);
+		tx.executeSql("SELECT * FROM assignments", [], populateAssignments, dbQueryError);
+		tx.executeSql("SELECT * FROM courses", [], populateCourses, dbQueryError);
+		tx.executeSql("SELECT * FROM notes", [], populateNotes, dbQueryError);
 	}, dbErrorHandler);
-	if (assignmentCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM assignments", [], populateAssignments, dbQueryError); });	}   //else alert('no assignments');
-	if (courseCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM courses", [], populateCourses, dbQueryError); });	}   //else alert('no courses');
-	if (noteCount) { db.transaction(function(tx) { tx.executeSql("SELECT * FROM notes", [], populateNotes, dbQueryError); });	}   //else alert('no notes');
 }
 function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
@@ -101,8 +98,7 @@ function doSave() {
 }
 function onDeviceReady() {
 	setupDB();
-	getAssignments();
-	displayListing();
+	getDisplays();
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
 	
@@ -123,8 +119,7 @@ function onDeviceReady() {
 	});
 	
 	$('.mainPage').live('pageshow', function () {
-		getAssignments();
-		displayListing();
+		getDisplays();
 		//alert("Assignments: "+ assignmentCount +"\nCourses: "+courseCount+"\nNotes: "+noteCount);
 	});
 	
@@ -137,28 +132,26 @@ function onDeviceReady() {
 
 	//date picker function
 	$(function(){
-	    $('.dateScroller').scroller({
-	        preset: 'date',
-	        invalid: '',
-	        theme: 'default',
-	        display: 'modal',
-	        mode: 'scroller',
-	        dateOrder: 'mmD ddyy'
-	    });
-	    
-	    $('#assignDateDue').click(function(){
-	    	$('.dateScroller').scroller('show');
-	        return false;
-	    });
-	    $('#noteDateDue').click(function(){
-	        $('.dateScroller').scroller('show'); 
-	        return false;
-	    });
-	    $('#defaultDateDue').click(function(){
-	        $('.dateScroller').scroller('show'); 
-	        return false;
-	    });
-	    
+		$('.dateScroller').scroller({
+			preset: 'date',
+			invalid: '',
+			theme: 'default',
+			display: 'modal',
+			mode: 'scroller',
+			dateOrder: 'mmD ddyy'
+		});
+		$('#assignDateDue').click( function() {
+			$('.dateScroller').scroller('show');
+			return false;
+		});
+		$('#noteDateDue').click(function(){
+			$('.dateScroller').scroller('show'); 
+			return false;
+		});
+		$('#defaultDateDue').click(function(){
+			$('.dateScroller').scroller('show'); 
+			return false;
+		});
 	});
 	
 	//time picker function
