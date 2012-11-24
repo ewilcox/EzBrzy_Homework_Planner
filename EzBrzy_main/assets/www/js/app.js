@@ -2,21 +2,15 @@ var db, data, assignmentCount, courseCount, noteCount;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
-function dbSuccessCB() { alert("db.transaction success"); }		// generic callback, still needed?  probably take this out.
+function dbSuccessCB() { alert("db.transaction success"); }
 function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 
-function saveAssignment() {  // took (data,cb) out of parameter list
+function saveAssignment() {
 	$('#editAssignmentForm').submit();
-//	db.transaction(function(tx) {
-//		var id = assignmentCount+1,
-//			name = "test",
-//			loc = "none",
-//			due = "some date",
-//			time = "some time",
-//			rem = "none",
-//			note = "none";
-//		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?,?)',[id,name,loc,due,time,rem,note]);
-//	}, dbErrorHandler, dbSuccessCB);
+	db.transaction(function(tx) {
+		tx.executeSql('INSERT INTO assignments (adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?)',
+				[data.desc, data.due, data.time, data.occ, data.rem, data.note]);
+	}, dbErrorHandler, dbSuccessCB);
 	
 	// old function, originally used as a framework for above code
 //    if(data.title === "") { data.title = "[No Title]"; }
@@ -27,18 +21,18 @@ function saveAssignment() {  // took (data,cb) out of parameter list
 //    alert(data.title);
     //getEntries();
 }
-function saveNote() {
-	$('#addNoteForm').submit();
-	db.transaction (function (tx) {
-		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
-				[data.desc, data.due, data.time, data.rem, data.occ]);
-	}, dbErrorHandler);
-}
 function saveCourse() {
 	$('#addCourseForm').submit();
 	db.transaction (function (tx) {
 		tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
 				[data.name,data.loc,data.due,data.time,data.rem,data.note]);
+	}, dbErrorHandler);
+}
+function saveNote() {
+	$('#addNoteForm').submit();
+	db.transaction (function (tx) {
+		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
+				[data.desc, data.due, data.time, data.rem, data.occ]);
 	}, dbErrorHandler);
 }
 function setupTable(tx) {
@@ -73,30 +67,52 @@ function populateCourseForm (tx, results) {
 	//alert(results.rows.item(0).cid +':'+ results.rows.item(0).cname+':'+ results.rows.item(0).cloc+':'+ results.rows.item(0).cdue+':'+ results.rows.item(0).ctime+':'+ results.rows.item(0).crem+':'+ results.rows.item(0).cnote);
 	
 }
+function editAssignment (assignment) {
+	//TODO: edit assignment stuff here
+}
 function editCourse (course) {
 	db.transaction (function (tx) {
 		tx.executeSql('SELECT * FROM courses WHERE cid = ' + course.id, [], populateCourseForm, dbQueryError);
 	}, dbErrorHandler);
 }
+function editNote (note) {
+	//TODO: edit note stuff here
+}
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
 	assignmentCount = results.rows.length;
-	//fill in output and .html to index.html correct location
+	if (results.rows.length === 0) {
+		output = '<h3>No Current Assignments</h3>';
+	} else {
+		for (i=0; i<results.rows.length; i++) {
+			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).aname +'</a></li>';
+		}
+	}
+	$('#assignmentData').html(output).listview('refresh');
 }
 function populateCourses (tx, results) {
 	displayListing('#coursesDisplay', results);
 	courseCount = results.rows.length;
-	var output = '',
-		i, count;
-	count = results.rows.length;
-	if (count === 0) {
-		output = '<h3>Add Courses Below</h3>';
+	var i, output = '';
+	if (results.rows.length === 0) {
+		output = '<h3>No Current Courses</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
 			output += '<li><a href="#addCourse" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
 	$('#courseData').html(output).listview('refresh');
+}
+function populateChooseCourses (tx, results) {
+	var i, output = '';
+	if (results.rows.length === 0) {
+		output = '<h3>No Current Courses</h3>';
+	} else {
+		for (i=0; i<results.rows.length; i++) {
+			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
+		}
+	}
+	$('#chooseCourseData').html(output).listview('refresh');
 }
 function populateNotes (tx, results) {
 	displayListing('#notesDisplay', results);
@@ -110,13 +126,14 @@ function populateNotes (tx, results) {
 		for (i=0; i<results.rows.length; i++) {
 			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).nid +'" onclick="editNote(this);">'+ results.rows.item(i).ndesc +'</a></li>';
 		}
-}
-$('#noteData').html(output).listview('refresh');
+	}
+	$('#noteData').html(output).listview('refresh');
 }
 function getDisplays() {
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM assignments", [], populateAssignments, dbQueryError);
 		tx.executeSql("SELECT * FROM courses", [], populateCourses, dbQueryError);
+		tx.executeSql("SELECT * FROM courses", [], populateChooseCourses, dbQueryError);
 		tx.executeSql("SELECT * FROM notes", [], populateNotes, dbQueryError);
 	}, dbErrorHandler);
 }
@@ -124,7 +141,6 @@ function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
-
 function onDeviceReady() {
 	setupDB();
 	getDisplays();
@@ -165,12 +181,15 @@ function onDeviceReady() {
 		$('#addNoteForm').each (function(){this.reset();});
 	});
 	
-	$('.mainPage').live('pageshow', function () {
-		getDisplays();
+	$('.mainPage').live('pagebeforeshow', getDisplays)
 		//alert("Assignments: "+ assignmentCount +"\nCourses: "+courseCount+"\nNotes: "+noteCount);
-	});
+		.live('pageshow', getDisplays);
+	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
 	$('.historyBack').live('tap',function() {
+		$('#editAssignmentForm').each (function(){ this.reset(); });
+		$('#addCourseForm').each (function(){this.reset();});
+		$('#addNoteForm').each (function(){this.reset();});
 		history.back();
 		return false;
 	}).live('click',function() {
