@@ -182,7 +182,6 @@ function onDeviceReady() {
 	});
 	
 	$('.mainPage').live('pagebeforeshow', getDisplays);
-	//	.live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
 	$('.historyBack').live('tap',function() {
