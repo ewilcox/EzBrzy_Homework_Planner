@@ -11,7 +11,7 @@ function saveAssignment() {
 		tx.executeSql('INSERT INTO assignments (adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?)',
 				[data.desc, data.due, data.time, data.occ, data.rem, data.note]);
 	}, dbErrorHandler, dbSuccessCB);
-	
+	$.mobile.changePage("#assignments");
 	// old function, originally used as a framework for above code
 //    if(data.title === "") { data.title = "[No Title]"; }
 //    db.transaction(function(tx) {
@@ -181,9 +181,8 @@ function onDeviceReady() {
 		$('#addNoteForm').each (function(){this.reset();});
 	});
 	
-	$('.mainPage').live('pagebeforeshow', getDisplays)
-		//alert("Assignments: "+ assignmentCount +"\nCourses: "+courseCount+"\nNotes: "+noteCount);
-		.live('pageshow', getDisplays);
+	$('.mainPage').live('pagebeforeshow', getDisplays);
+	//	.live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
 	$('.historyBack').live('tap',function() {
