@@ -243,7 +243,15 @@ function onDeviceReady() {
 		})
 		.css('color', '#999999');
 	});
+	
+//the delete button
 
+	$("#yesDelete").click(function(){alert("delete has been selected");});
+
+	$("#noDelete").click(function(){
+		history.back();
+		return false;
+	});
 }
 
 function init() {
