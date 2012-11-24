@@ -36,9 +36,7 @@
 				</div>
 				<p id="assignmentsDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content" id="assignmentContent" class="myContent">
-				<p>some data here</p>
-			</div>
+			<div data-role="content" id="assignmentContent" class="myContent" data-inset="true"></div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
@@ -62,8 +60,8 @@
 					<input class="dateScroller" id="assignDateDue" name="scroller" />			
 					<label for="assignTimeDue">Time Due:</label>
 					<input class="timeScroller" name="scroller" id="assignTimeDue" />
-					<label for="aOccurance">Occurance:</label>
-					<select class="occurScroller" name="scroller" id="aOccurance" data-role="none" style="display:none">
+					<label for="assignOccurance">Occurance:</label>
+					<select class="occurScroller" name="scroller" id="assignOccurance" data-role="none" style="display:none">
 					    <option value="1">One-time</option>
 					    <option value="2">Daily</option>
 					    <option value="3">Weekly</option>
@@ -105,7 +103,7 @@
 				<p id="coursesDisplay" class="displaying"></p>
 			</div>
 			<div data-role="content" class="myContent">
-				<ul data-role="listview" id="courseData"></ul>
+				<ul data-role="listview" id="courseData" data-inset="true"></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -148,23 +146,21 @@
 	
 <!-- Notes Screen -->
 		<div data-role="page" class="mainPage" id="notes" data-theme="a">
-		<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
-			<div data-role="navbar">
-				<ul>
-	       			<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
-	       			<li><a href="#courses" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
-	       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
-	       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
-	       		</ul>
+			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
+				<div data-role="navbar">
+					<ul>
+		       			<li><a href="#assignments" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/assignments.png" alt="Notebook" height="36" width="36"/><br>Assignments</a></li>
+		       			<li><a href="#courses" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/courses.png" alt="Book" height="36" width="36"/><br>Courses</a></li>
+		       			<li><a href="#" class="ui-btn-active ui-state-persist" data-role="button" data-transition="none" data-direction="reverse">
+		       				<img src="css/images/notes.png" alt="Note" height="36" width="36"/><br><div>Other Reminders</div></a></li>
+		       		</ul>
+				</div>
+				<p id="notesDisplay" class="displaying"></p>
 			</div>
-			<p id="notesDisplay" class="displaying"></p>
-		</div>
 			<div data-role="content" class="myContent" id="noteContent">
-				<ul data-role="listview" id="noteData" data-inset="true" data-theme="b">
-					<li><a href="#">test item</a></li>
-				</ul>
+				<ul data-role="listview" id="noteData" data-inset="true" data-theme="b"></ul>
 	   		</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
@@ -184,7 +180,7 @@
 			<div data-role="content">
 				<form id="addNoteForm">
 					<label for="noteDesc">Description</label>
-					<textarea name="noteDesc" id="noteDesc" ></textarea>
+					<textarea name="noteDesc" id="noteDesc" class="defaults">Miscellaneous</textarea>
 					<label for="noteDateDue">Date Due</label>
 					<input class="dateScroller" name="noteDateDue" id="noteDateDue"/>
 					<label for="noteTimeDue">Time Due</label>
@@ -195,8 +191,8 @@
 						<option value="Off">Off</option>
 					</select>
 					<br/><br/>
-					<label for="nOccurance">Occurance</label>
-					<select class="occurScroller" name="scroller" id="nOccurance" data-role="none" style="display:none">
+					<label for="noteOccurance">Occurance</label>
+					<select class="occurScroller" name="scroller" id="noteOccurance" data-role="none" style="display:none">
 					    <option value="1">One-time</option>
 					    <option value="2">Daily</option>
 					    <option value="3">Weekly</option>

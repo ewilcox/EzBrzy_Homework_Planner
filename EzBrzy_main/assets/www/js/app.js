@@ -27,24 +27,34 @@ function saveAssignment() {  // took (data,cb) out of parameter list
 //    alert(data.title);
     //getEntries();
 }
+function saveNote() {
+	$('#addNoteForm').submit();
+	db.transaction (function (tx) {
+		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
+				[data.desc, data.due, data.time, data.rem, data.occ]);
+	}, dbErrorHandler);
+}
 function saveCourse() {
 	$('#addCourseForm').submit();
 	db.transaction (function (tx) {
-		tx.executeSql('INSERT INTO courses (cid, cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?,?)',
-				[courseCount+1,data.name,data.loc,data.due,data.time,data.rem,data.note]);
+		tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
+				[data.name,data.loc,data.due,data.time,data.rem,data.note]);
 	}, dbErrorHandler);
 }
 function setupTable(tx) {
+	//tx.executeSql("DROP TABLE IF EXISTS assignments");
+	//tx.executeSql("DROP TABLE IF EXISTS courses");
+	//tx.executeSql("DROP TABLE IF EXISTS notes");
 	tx.executeSql('PRAGMA foreign_keys = ON;'); 
-	tx.executeSql("CREATE TABLE IF NOT EXISTS courses(cid INTEGER PRIMARY KEY, cname TEXT NOT NULL, cloc, cdue, ctime, crem, cnote)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS courses(cid INTEGER PRIMARY KEY AUTOINCREMENT, cname TEXT NOT NULL, cloc, cdue, ctime, crem, cnote)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS assignments(" +
-					"aid INTEGER PRIMARY KEY, " +
+					"aid INTEGER PRIMARY KEY AUTOINCREMENT, " +
 					"cid INTEGER NOT NULL, " +
 					"adesc TEXT NOT NULL, " +
 					"adue, atime, aocc, arem, " +
 					"anote TEXT, " +
 					"FOREIGN KEY (cid) REFERENCES courses (cid))");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(nid INTEGER PRIMARY KEY, ndesc TEXT NOT NULL, ndue, ntime, nrem, nooc)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(nid INTEGER PRIMARY KEY AUTOINCREMENT, ndesc TEXT NOT NULL, ndue, ntime, nrem, nocc)");
 }
 
 function displayListing (location, results) {
@@ -59,8 +69,14 @@ function renderEntries(tx, results) {
 		alert(results.rows.item(i).cid);
 	}
 }
-function editCourse (course) {
+function populateCourseForm (tx, results) {
+	//alert(results.rows.item(0).cid +':'+ results.rows.item(0).cname+':'+ results.rows.item(0).cloc+':'+ results.rows.item(0).cdue+':'+ results.rows.item(0).ctime+':'+ results.rows.item(0).crem+':'+ results.rows.item(0).cnote);
 	
+}
+function editCourse (course) {
+	db.transaction (function (tx) {
+		tx.executeSql('SELECT * FROM courses WHERE cid = ' + course.id, [], populateCourseForm, dbQueryError);
+	}, dbErrorHandler);
 }
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
@@ -77,7 +93,7 @@ function populateCourses (tx, results) {
 		output = '<h3>Add Courses Below</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
+			output += '<li><a href="#addCourse" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
 	$('#courseData').html(output).listview('refresh');
@@ -108,24 +124,21 @@ function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
-//this function will go away --  use saveAssignment instead
-function doSave() {
-	$('#editAssignmentForm').submit();
-	//saveAssignment();
-	
-	//alert(data.title);  //seems to display data in form correctly.
-	//alert($('#assignDesc').val());  //<--- this working
-}
+
 function onDeviceReady() {
 	setupDB();
 	getDisplays();
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
+	getById('#saveNote').addEventListener("click",saveNote);
 	
 	$("#editAssignmentForm").live("submit",function(e) {
         data = {desc:$("#assignDesc").val(), 
                 due:$("#assignDateDue").val(),
-                time:$("#assignTimeDue").val()
+                time:$("#assignTimeDue").val(),
+                occ:$("#assignOccurance").val(),
+                rem:$("#assignReminder").val(),
+                note:$("#assignInfo").val()
         };
         //reset all the values
         $('#editAssignmentForm').each (function(){this.reset();});
@@ -140,6 +153,16 @@ function onDeviceReady() {
         };
         //reset all the values
         $('#addCourseForm').each (function(){this.reset();});
+	});
+	$('#addNoteForm').live('submit', function (e) {
+		data = {desc:$('#noteDesc').val(),
+				due:$('#noteDateDue').val(),
+				time:$('#noteTimeDue').val(),
+				rem:$('#noteReminder').val(),
+				occ:$('#noteOccurance').val()
+		};
+		//reset all the values
+		$('#addNoteForm').each (function(){this.reset();});
 	});
 	
 	$('.mainPage').live('pageshow', function () {
