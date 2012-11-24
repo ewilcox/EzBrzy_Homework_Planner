@@ -215,9 +215,24 @@
 		<div data-role="page" id="addCourse" data-theme="a">
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
-				<div><p class="displaying">Set Up New Course</p></div>
+				<div class="displaying">Set Up New Course<a href="#myPopup" data-rel="popup" data-role="button" data-inline="true" 
+				data-mini="true" data-icon="delete" class="redButton" style="float:right">Delete Course</a> </div>	
 			</div>
 			<div data-role="content">
+			<div></div>
+			<div data-role="popup" id="myPopup" data-theme="a">
+				<div data-role="header"><h3>WARNING!!</h3></div>
+				<div data-role="content">Do you really want to delete this course?</div>
+				<div data-role="footer">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#" data-role="button" data-icon="check" id="yesDelete">Yes</a>
+							<li><a href="#" data-role="button" data-icon="delete" id="noDelete">No</a>
+						</ul>
+					</div>
+				</div>
+			</div>
+		
 				<form id="addCourseForm">
 					<label for="courseName">Course Title</label>
 					<input type="text" name="courseName" id="courseName"class="defaults" value="My Course"></input>
