@@ -11,7 +11,7 @@ function saveAssignment() {
 		tx.executeSql('INSERT INTO assignments (adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?)',
 				[data.desc, data.due, data.time, data.occ, data.rem, data.note]);
 	}, dbErrorHandler, dbSuccessCB);
-	$.mobile.changePage("#assignments");
+	//$.mobile.changePage("#assignments");  // <--- doesn't help with populating assignments page
 	// old function, originally used as a framework for above code
 //    if(data.title === "") { data.title = "[No Title]"; }
 //    db.transaction(function(tx) {
@@ -103,13 +103,22 @@ function populateCourses (tx, results) {
 	}
 	$('#courseData').html(output).listview('refresh');
 }
+function gotoAssignments (assignment) {
+	$.mobile.changePage("#addAssignment");
+	db.transaction(function(tx) {
+		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
+			$('#showClass').html('Add New Assignment - ' + results.rows.item(0).cname);
+		}, dbQueryError);
+	}, dbErrorHandler);
+	
+}
 function populateChooseCourses (tx, results) {
 	var i, output = '';
 	if (results.rows.length === 0) {
 		output = '<h3>No Current Courses</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
+			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" cid="5" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
 	$('#chooseCourseData').html(output).listview('refresh');
