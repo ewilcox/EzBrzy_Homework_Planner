@@ -8,18 +8,11 @@ function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 function saveAssignment() {
 	$('#editAssignmentForm').submit();
 	db.transaction(function(tx) {
-		tx.executeSql('INSERT INTO assignments (adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?)',
-				[data.desc, data.due, data.time, data.occ, data.rem, data.note]);
+		tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
+				[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
 	}, dbErrorHandler, dbSuccessCB);
 	//$.mobile.changePage("#assignments");  // <--- doesn't help with populating assignments page
-	// old function, originally used as a framework for above code
-//    if(data.title === "") { data.title = "[No Title]"; }
-//    db.transaction(function(tx) {
-//        if(data.id === "") { tx.executeSql("insert into notes(title,body,updated) values(?,?,?)",[data.title,data.body, new Date()]); }
-//        else { tx.executeSql("update notes set title=?, body=?, updated=? where id=?",[data.title,data.body, new Date(), data.id]); }
-//    }, dbErrorHandler,dbSuccessCB);
-//    alert(data.title);
-    //getEntries();
+    getEntries();  // need this??
 }
 function saveCourse() {
 	$('#addCourseForm').submit();
@@ -81,11 +74,13 @@ function editNote (note) {
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
 	assignmentCount = results.rows.length;
+	var course, i, output = '';
 	if (results.rows.length === 0) {
 		output = '<h3>No Current Assignments</h3>';
 	} else {
-		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).aname +'</a></li>';
+		for (i=0; i<results.rows.length; i++) {			
+			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).adesc + ' - ' + 
+						course + '</a></li>';
 		}
 	}
 	$('#assignmentData').html(output).listview('refresh');
@@ -99,7 +94,7 @@ function populateCourses (tx, results) {
 	} else {
 		for (i=0; i<results.rows.length; i++) {
 			output += '<li><a href="#addCourse" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
-		}
+		}  // pick up here ----> add course name into link name
 	}
 	$('#courseData').html(output).listview('refresh');
 }
@@ -108,9 +103,10 @@ function gotoAssignments (assignment) {
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
 			$('#showClass').html('Add New Assignment - ' + results.rows.item(0).cname);
+			$('#assignCourse').attr('value', results.rows.item(0).cid);
 		}, dbQueryError);
 	}, dbErrorHandler);
-	
+	//alert(assignment.getAttribute("data"));  //<-- this works, providing there is a 'data' attribute to the tag!
 }
 function populateChooseCourses (tx, results) {
 	var i, output = '';
@@ -118,7 +114,7 @@ function populateChooseCourses (tx, results) {
 		output = '<h3>No Current Courses</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" cid="5" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
+			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
 	$('#chooseCourseData').html(output).listview('refresh');
@@ -158,12 +154,13 @@ function onDeviceReady() {
 	getById('#saveNote').addEventListener("click",saveNote);
 	
 	$("#editAssignmentForm").live("submit",function(e) {
-        data = {desc:$("#assignDesc").val(), 
-                due:$("#assignDateDue").val(),
-                time:$("#assignTimeDue").val(),
-                occ:$("#assignOccurance").val(),
-                rem:$("#assignReminder").val(),
-                note:$("#assignInfo").val()
+		data = {desc:$("#assignDesc").val(),
+				courseId:$("#assignCourse").val(),
+				due:$("#assignDateDue").val(),
+				time:$("#assignTimeDue").val(),
+				occ:$("#assignOccurance").val(),
+				rem:$("#assignReminder").val(),
+				note:$("#assignInfo").val()
         };
         //reset all the values
         $('#editAssignmentForm').each (function(){this.reset();});

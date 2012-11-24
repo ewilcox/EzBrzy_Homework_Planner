@@ -36,7 +36,9 @@
 				</div>
 				<p id="assignmentsDisplay" class="displaying"></p>
 			</div>
-			<div data-role="content" id="assignmentData" class="myContent" data-inset="true"></div>
+			<div data-role="content" class="myContent">
+				<ul data-role="listview" id="assignmentData" data-inset="true"></ul>
+			</div>
 			<div data-role="footer" data-id="myfooter" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
@@ -54,6 +56,7 @@
 			</div>
 			<div data-role="content">
 				<form id="editAssignmentForm">
+					<input type="hidden" name="assignCourse" id="assignCourse" />
 					<label for="assignDesc">Description</label>
 					<input type="text" name="assignDesc" id="assignDesc" class="defaults" value="HW" />
 					<label for="assignDateDue">Date Due:</label>
