@@ -11,6 +11,7 @@ function saveAssignment() {
 		tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
 				[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
 	}, dbErrorHandler);
+	$('a[data-icon=delete]').hide();
 }
 function saveCourse() {
 	$('#addCourseForm').submit();
@@ -26,6 +27,7 @@ function saveNote() {
 		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
 				[data.desc, data.due, data.time, data.rem, data.occ]);
 	}, dbErrorHandler);
+	$('a[data-icon=delete]').hide();
 }
 function setupTable(tx) {
 	//tx.executeSql("DROP TABLE IF EXISTS assignments");
@@ -55,12 +57,59 @@ function renderEntries(tx, results) {
 		alert(results.rows.item(i).cid);
 	}
 }
+function clearAssignmentFormData() {
+	$("#assignDesc").attr('value', 'HW');
+	$("#assignCourse").removeAttr('value');
+	$("#assignDateDue").removeAttr('value');
+	$("#assignTimeDue").removeAttr('value');
+	$("#assignOccurance").removeAttr('value');
+	$("#assignReminder").removeAttr('value');
+	$("#assignInfo").removeAttr('value');
+}
+function clearCourseFormData() {
+	$("#courseName").attr('value', 'My Course');
+    $("#courseLoc").removeAttr('value');
+    $("#defaultDateDue").removeAttr('value');
+    $("#defaultTimeDue").removeAttr('value');
+    $("#defaultReminder").removeAttr('value');
+    $("#courseNote").removeAttr('value');
+}
+function clearNoteFormData() {
+	$('#noteDesc').html('Miscellaneous');
+	$('#noteDateDue').removeAttr('value');
+	$('#noteTimeDue').removeAttr('value');
+	$('#noteReminder').removeAttr('value');
+	$('#noteOccurance').removeAttr('value');
+}
+function populateAssignmentForm (tx, results) {
+	$("#assignDesc").attr('value', results.rows.item(0).adesc);
+	$("#assignCourse").attr('value', results.rows.item(0).cid);
+	$("#assignDateDue").attr('value', results.rows.item(0).adue);
+	$("#assignTimeDue").attr('value', results.rows.item(0).atime);
+	$("#assignOccurance").attr('value', results.rows.item(0).aocc);
+	$("#assignReminder").attr('value', results.rows.item(0).arem);
+	$("#assignInfo").attr('value', results.rows.item(0).anote);
+}
 function populateCourseForm (tx, results) {
-	//alert(results.rows.item(0).cid +':'+ results.rows.item(0).cname+':'+ results.rows.item(0).cloc+':'+ results.rows.item(0).cdue+':'+ results.rows.item(0).ctime+':'+ results.rows.item(0).crem+':'+ results.rows.item(0).cnote);
-	
+	$("#courseName").attr('value', results.rows.item(0).cname);
+    $("#courseLoc").attr('value', results.rows.item(0).cloc);
+    $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
+    $("#defaultTimeDue").attr('value', results.rows.item(0).ctime);
+    $("#defaultReminder").attr('value', results.rows.item(0).crem);
+    $("#courseNote").attr('value', results.rows.item(0).cnote);
+}
+function populateNoteForm (tx, results) {
+	$('#noteDesc').html(results.rows.item(0).ndesc);
+	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
+	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
+	$('#noteReminder').attr('value', results.rows.item(0).nrem);
+	$('#noteOccurance').attr('value', results.rows.item(0).nocc);
 }
 function editAssignment (assignment) {
-	//TODO: edit assignment stuff here
+	db.transaction (function (tx) {
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid', [], populateAssignmentForm, dbQueryError);
+	}, dbErrorHandler);
+	$('a[data-icon=delete]').show();
 }
 function editCourse (course) {
 	db.transaction (function (tx) {
@@ -69,7 +118,10 @@ function editCourse (course) {
 	$('a[data-icon=delete]').show();
 }
 function editNote (note) {
-	//TODO: edit note stuff here
+	db.transaction (function (tx) {
+		tx.executeSql('SELECT * FROM notes', [], populateNoteForm, dbQueryError);
+	}, dbErrorHandler);
+	$('a[data-icon=delete]').show();
 }
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
@@ -99,7 +151,7 @@ function populateCourses (tx, results) {
 	$('#courseData').html(output).listview('refresh');
 }
 function gotoAssignments (assignment) {
-	$.mobile.changePage("#addAssignment");
+	//$.mobile.changePage("#addAssignment");
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
 			$('#showClass').html('Add New Assignment - ' + results.rows.item(0).cname);
@@ -114,7 +166,7 @@ function populateChooseCourses (tx, results) {
 		output = '<h3>No Current Courses</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
+			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
 	$('#chooseCourseData').html(output).listview('refresh');
@@ -129,7 +181,7 @@ function populateNotes (tx, results) {
 		output = '<h3>No Current Notes</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {
-			output += '<li><a href="#" data-role="button" id="'+ results.rows.item(i).nid +'" onclick="editNote(this);">'+ results.rows.item(i).ndesc +'</a></li>';
+			output += '<li><a href="#addnote" data-role="button" id="'+ results.rows.item(i).nid +'" onclick="editNote(this);">'+ results.rows.item(i).ndesc +'</a></li>';
 		}
 	}
 	$('#noteData').html(output).listview('refresh');
@@ -164,6 +216,7 @@ function onDeviceReady() {
 				note:$("#assignInfo").val()
         };
         //reset all the values
+		clearAssignmentFormData();
         $('#editAssignmentForm').each (function(){this.reset();});
 	});
 	$("#addCourseForm").live("submit",function(e) {
@@ -175,6 +228,7 @@ function onDeviceReady() {
                 note:$("#courseNote").val()
         };
         //reset all the values
+        clearCourseFormData();
         $('#addCourseForm').each (function(){this.reset();});
 	});
 	$('#addNoteForm').live('submit', function (e) {
@@ -185,6 +239,7 @@ function onDeviceReady() {
 				occ:$('#noteOccurance').val()
 		};
 		//reset all the values
+		clearNoteFormData();
 		$('#addNoteForm').each (function(){this.reset();});
 	});
 	
@@ -196,6 +251,9 @@ function onDeviceReady() {
 		$('#addCourseForm').each (function(){this.reset();});
 		$('#addNoteForm').each (function(){this.reset();});
 		$('a[data-icon=delete]').hide();
+		clearAssignmentFormData();
+		clearCourseFormData();
+		clearNoteFormData();
 		history.back();
 		return false;
 	}).live('click',function() {
