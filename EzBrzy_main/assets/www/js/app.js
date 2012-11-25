@@ -74,13 +74,13 @@ function editNote (note) {
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
 	assignmentCount = results.rows.length;
-	var course, i, output = '';
+	var i, output = '';
 	if (results.rows.length === 0) {
 		output = '<h3>No Current Assignments</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {			
 			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).adesc + ' - ' + 
-						course + '</a></li>';
+						results.rows.item(i).cname + '</a></li>';
 		}
 	}
 	$('#assignmentData').html(output).listview('refresh');
@@ -94,7 +94,7 @@ function populateCourses (tx, results) {
 	} else {
 		for (i=0; i<results.rows.length; i++) {
 			output += '<li><a href="#addCourse" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
-		}  // pick up here ----> add course name into link name
+		}
 	}
 	$('#courseData').html(output).listview('refresh');
 }
@@ -136,7 +136,7 @@ function populateNotes (tx, results) {
 }
 function getDisplays() {
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM assignments", [], populateAssignments, dbQueryError);
+		tx.executeSql("SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid", [], populateAssignments, dbQueryError);
 		tx.executeSql("SELECT * FROM courses", [], populateCourses, dbQueryError);
 		tx.executeSql("SELECT * FROM courses", [], populateChooseCourses, dbQueryError);
 		tx.executeSql("SELECT * FROM notes", [], populateNotes, dbQueryError);
