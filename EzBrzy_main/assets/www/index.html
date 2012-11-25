@@ -218,19 +218,19 @@
 		<div data-role="page" id="addCourse" data-theme="a">
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
-				<div class="displaying">Set Up New Course<a href="#myPopup" data-rel="popup" data-role="button" data-inline="true" 
-				data-mini="true" data-icon="delete" class="redButton" style="float:right">Delete Course</a> </div>	
+				<div class="displaying">Set Up New Course
+					<a href="#deleteCoursePopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>
+				</div>	
 			</div>
 			<div data-role="content">
-			<div></div>
-			<div data-role="popup" id="myPopup" data-theme="a">
-				<div data-role="header"><h3>WARNING!!</h3></div>
-				<div data-role="content">Do you really want to delete this course?</div>
-				<div data-role="footer">
-					<div data-role="navbar">
+			<div data-role="popup" id="deleteCoursePopup" data-theme="b">
+				<div data-role="header" class="redButton"><h3>WARNING!!</h3></div>
+				<div data-role="content" data-theme="b">Do you really want to delete this course?</div>
+				<div data-role="footer" data-theme="b">
+					<div data-role="navbar" data-theme="b">
 						<ul>
-							<li><a href="#" data-role="button" data-icon="check" id="yesDelete">Yes</a>
-							<li><a href="#" data-role="button" data-icon="delete" id="noDelete">No</a>
+							<li><a href="#" data-role="button" data-icon="check" id="yesDelete" data-theme="b">Yes</a>
+							<li><a href="#" data-role="button" data-icon="delete" id="noDelete" data-theme="b">No</a>
 						</ul>
 					</div>
 				</div>

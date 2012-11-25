@@ -10,9 +10,7 @@ function saveAssignment() {
 	db.transaction(function(tx) {
 		tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
 				[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
-	}, dbErrorHandler, dbSuccessCB);
-	//$.mobile.changePage("#assignments");  // <--- doesn't help with populating assignments page
-    getEntries();  // need this??
+	}, dbErrorHandler);
 }
 function saveCourse() {
 	$('#addCourseForm').submit();
@@ -20,6 +18,7 @@ function saveCourse() {
 		tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
 				[data.name,data.loc,data.due,data.time,data.rem,data.note]);
 	}, dbErrorHandler);
+	$('a[data-icon=delete]').hide();
 }
 function saveNote() {
 	$('#addNoteForm').submit();
@@ -67,6 +66,7 @@ function editCourse (course) {
 	db.transaction (function (tx) {
 		tx.executeSql('SELECT * FROM courses WHERE cid = ' + course.id, [], populateCourseForm, dbQueryError);
 	}, dbErrorHandler);
+	$('a[data-icon=delete]').show();
 }
 function editNote (note) {
 	//TODO: edit note stuff here
@@ -152,6 +152,7 @@ function onDeviceReady() {
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
 	getById('#saveNote').addEventListener("click",saveNote);
+	$('a[data-icon=delete]').hide();
 	
 	$("#editAssignmentForm").live("submit",function(e) {
 		data = {desc:$("#assignDesc").val(),
@@ -194,6 +195,7 @@ function onDeviceReady() {
 		$('#editAssignmentForm').each (function(){ this.reset(); });
 		$('#addCourseForm').each (function(){this.reset();});
 		$('#addNoteForm').each (function(){this.reset();});
+		$('a[data-icon=delete]').hide();
 		history.back();
 		return false;
 	}).live('click',function() {
