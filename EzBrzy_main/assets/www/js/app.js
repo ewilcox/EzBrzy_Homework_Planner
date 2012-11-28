@@ -186,7 +186,10 @@ function populateNotes (tx, results) {
 	$('#noteData').html(output).listview('refresh');
 }
 function deleteNote(id) {
-	alert('delete note');
+	db.transaction(function(tx) {
+		tx.executeSql('DELETE FROM notes WHERE nid=?;', [id], null, dbQueryError);
+	}, dbErrorHandler);
+	$.mobile.changePage('#notes');
 }
 function deleteCourse(id) {
 	alert('delete course');
@@ -333,7 +336,6 @@ function onDeviceReady() {
 	
 //the delete button
 	$(".yesDelete").click(function() {
-		//alert("delete " + this.value + ' ' + this.getAttribute("src"));  //<--- access attributes correctly
 		if (this.getAttribute('src')==='note') { deleteNote(this.value); }
 		else if (this.getAttribute('src')==='course') { deleteCourse(this.value); }
 		else if (this.getAttribute('src')==='assignment') { deleteAssignment(this.value); }
