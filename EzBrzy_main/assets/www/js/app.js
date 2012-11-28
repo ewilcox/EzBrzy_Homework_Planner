@@ -29,6 +29,9 @@ function saveNote() {
 	}, dbErrorHandler);
 	$('a[data-icon=delete]').hide();
 }
+function showDelete() {
+	$('a[data-icon=delete]').show();
+}
 function setupTable(tx) {
 	//tx.executeSql("DROP TABLE IF EXISTS assignments");
 	//tx.executeSql("DROP TABLE IF EXISTS courses");
@@ -82,6 +85,8 @@ function clearNoteFormData() {
 	$('#noteOccurance').removeAttr('value');
 }
 function populateAssignmentForm (tx, results) {
+	showDelete();
+	$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 	$("#assignDesc").attr('value', results.rows.item(0).adesc);
 	$("#assignCourse").attr('value', results.rows.item(0).cid);
 	$("#assignDateDue").attr('value', results.rows.item(0).adue);
@@ -107,21 +112,19 @@ function populateNoteForm (tx, results) {
 }
 function editAssignment (assignment) {
 	db.transaction (function (tx) {
-		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid', [], populateAssignmentForm, dbQueryError);
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').show();
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE aid = ' 
+				+ assignment.id, [], populateAssignmentForm, dbQueryError);
+	}, dbErrorHandler, showDelete);
 }
 function editCourse (course) {
 	db.transaction (function (tx) {
 		tx.executeSql('SELECT * FROM courses WHERE cid = ' + course.id, [], populateCourseForm, dbQueryError);
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').show();
+	}, dbErrorHandler, showDelete);
 }
 function editNote (note) {
 	db.transaction (function (tx) {
-		tx.executeSql('SELECT * FROM notes', [], populateNoteForm, dbQueryError);
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').show();
+		tx.executeSql('SELECT * FROM notes WHERE nid = ' + note.id, [], populateNoteForm, dbQueryError);
+	}, dbErrorHandler, showDelete);
 }
 function populateAssignments (tx, results) {
 	displayListing('#assignmentsDisplay', results);
@@ -151,10 +154,9 @@ function populateCourses (tx, results) {
 	$('#courseData').html(output).listview('refresh');
 }
 function gotoAssignments (assignment) {
-	//$.mobile.changePage("#addAssignment");
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
-			$('#showClass').html('Add New Assignment - ' + results.rows.item(0).cname);
+			$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 			$('#assignCourse').attr('value', results.rows.item(0).cid);
 		}, dbQueryError);
 	}, dbErrorHandler);
@@ -195,17 +197,17 @@ function getDisplays() {
 	}, dbErrorHandler);
 }
 function setupDB() {
-	//window.deleteFile("ezbrzy");
 	db = window.openDatabase("ezbrzy2","1.0","EzBrzy_Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
+
 function onDeviceReady() {
 	setupDB();
 	getDisplays();
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
 	getById('#saveNote').addEventListener("click",saveNote);
-	$('a[data-icon=delete]').hide();
+//	$('a[data-icon=delete]').hide();
 	
 	$("#editAssignmentForm").live("submit",function(e) {
 		data = {desc:$("#assignDesc").val(),
@@ -244,17 +246,17 @@ function onDeviceReady() {
 		$('#addNoteForm').each (function(){this.reset();});
 	});
 	
-	$('.mainPage').live('pagebeforeshow', getDisplays);
+	$('.mainPage').live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
 	$('.historyBack').live('tap',function() {
+		clearAssignmentFormData();
+		clearCourseFormData();
+		clearNoteFormData();
 		$('#editAssignmentForm').each (function(){ this.reset(); });
 		$('#addCourseForm').each (function(){this.reset();});
 		$('#addNoteForm').each (function(){this.reset();});
 		$('a[data-icon=delete]').hide();
-		clearAssignmentFormData();
-		clearCourseFormData();
-		clearNoteFormData();
 		history.back();
 		return false;
 	}).live('click',function() {
@@ -352,10 +354,11 @@ function onDeviceReady() {
 	});
 	
 //the delete button
+	$(".yesDelete").click(function() {
+		alert("delete has been selected");
+	});
 
-	$("#yesDelete").click(function(){alert("delete has been selected");});
-
-	$("#noDelete").click(function(){
+	$(".noDelete").click(function(){
 		history.back();
 		return false;
 	});
