@@ -78,6 +78,9 @@ function clearNoteFormData() {
 	$('#noteDesc').html('Miscellaneous');
 	$('#noteDateDue').removeAttr('value');
 	$('#noteTimeDue').removeAttr('value');
+	$delete = $(".yesDelete");
+	$delete.removeAttr('value');
+	$delete.removeAttr('src');
 }
 function populateAssignmentForm (tx, results) {
 	showDelete();
@@ -96,6 +99,10 @@ function populateCourseForm (tx, results) {
     $("#courseNote").attr('value', results.rows.item(0).cnote);
 }
 function populateNoteForm (tx, results) {
+	$(".yesDelete").attr({ 
+		  src: "note",
+		  value: results.rows.item(0).nid
+		});
 	$('#noteDesc').html(results.rows.item(0).ndesc);
 	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
 	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
@@ -177,6 +184,15 @@ function populateNotes (tx, results) {
 		}
 	}
 	$('#noteData').html(output).listview('refresh');
+}
+function deleteNote(id) {
+	alert('delete note');
+}
+function deleteCourse(id) {
+	alert('delete course');
+}
+function deleteAssignment(id) {
+	alert('delete assignement');
 }
 function getDisplays() {
 	db.transaction(function(tx) {
@@ -321,7 +337,11 @@ function onDeviceReady() {
 	
 //the delete button
 	$(".yesDelete").click(function() {
-		alert("delete has been selected");
+		//alert("delete " + this.value + ' ' + this.getAttribute("src"));  //<--- access attributes correctly
+		if (this.getAttribute('src')==='note') { deleteNote(this.value); }
+		else if (this.getAttribute('src')==='course') { deleteCourse(this.value); }
+		else if (this.getAttribute('src')==='assignment') { deleteAssignment(this.value); }
+		else { alert('Error \nDelete not bound to any data!'); }
 	});
 
 	$(".noDelete").click(function(){
