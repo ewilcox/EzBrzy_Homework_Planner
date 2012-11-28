@@ -62,8 +62,6 @@ function clearAssignmentFormData() {
 	$("#assignCourse").removeAttr('value');
 	$("#assignDateDue").removeAttr('value');
 	$("#assignTimeDue").removeAttr('value');
-	$("#assignOccurance").removeAttr('value');
-	$("#assignReminder").removeAttr('value');
 	$("#assignInfo").removeAttr('value');
 }
 function clearCourseFormData() {
@@ -71,23 +69,18 @@ function clearCourseFormData() {
     $("#courseLoc").removeAttr('value');
     $("#defaultDateDue").removeAttr('value');
     $("#defaultTimeDue").removeAttr('value');
-    $("#defaultReminder").removeAttr('value');
     $("#courseNote").removeAttr('value');
 }
 function clearNoteFormData() {
 	$('#noteDesc').html('Miscellaneous');
 	$('#noteDateDue').removeAttr('value');
 	$('#noteTimeDue').removeAttr('value');
-	$('#noteReminder').removeAttr('value');
-	$('#noteOccurance').removeAttr('value');
 }
 function populateAssignmentForm (tx, results) {
 	$("#assignDesc").attr('value', results.rows.item(0).adesc);
 	$("#assignCourse").attr('value', results.rows.item(0).cid);
 	$("#assignDateDue").attr('value', results.rows.item(0).adue);
 	$("#assignTimeDue").attr('value', results.rows.item(0).atime);
-	$("#assignOccurance").attr('value', results.rows.item(0).aocc);
-	$("#assignReminder").attr('value', results.rows.item(0).arem);
 	$("#assignInfo").attr('value', results.rows.item(0).anote);
 }
 function populateCourseForm (tx, results) {
@@ -95,15 +88,12 @@ function populateCourseForm (tx, results) {
     $("#courseLoc").attr('value', results.rows.item(0).cloc);
     $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
     $("#defaultTimeDue").attr('value', results.rows.item(0).ctime);
-    $("#defaultReminder").attr('value', results.rows.item(0).crem);
     $("#courseNote").attr('value', results.rows.item(0).cnote);
 }
 function populateNoteForm (tx, results) {
 	$('#noteDesc').html(results.rows.item(0).ndesc);
 	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
 	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
-	$('#noteReminder').attr('value', results.rows.item(0).nrem);
-	$('#noteOccurance').attr('value', results.rows.item(0).nocc);
 }
 function editAssignment (assignment) {
 	db.transaction (function (tx) {
@@ -211,8 +201,6 @@ function onDeviceReady() {
 				courseId:$("#assignCourse").val(),
 				due:$("#assignDateDue").val(),
 				time:$("#assignTimeDue").val(),
-				occ:$("#assignOccurance").val(),
-				rem:$("#assignReminder").val(),
 				note:$("#assignInfo").val()
         };
         //reset all the values
@@ -224,7 +212,6 @@ function onDeviceReady() {
                 loc:$("#courseLoc").val(),
                 due:$("#defaultDateDue").val(),
                 time:$("#defaultTimeDue").val(),
-                rem:$("#defaultReminder").val(),
                 note:$("#courseNote").val()
         };
         //reset all the values
@@ -234,9 +221,7 @@ function onDeviceReady() {
 	$('#addNoteForm').live('submit', function (e) {
 		data = {desc:$('#noteDesc').val(),
 				due:$('#noteDateDue').val(),
-				time:$('#noteTimeDue').val(),
-				rem:$('#noteReminder').val(),
-				occ:$('#noteOccurance').val()
+				time:$('#noteTimeDue').val()
 		};
 		//reset all the values
 		clearNoteFormData();
@@ -307,25 +292,6 @@ function onDeviceReady() {
 	    });    
 	});
 	
-	//occurance picker
-	$(function(){
-	    $('.occurScroller').scroller({
-	        preset: 'select',
-	        theme: 'default',
-	        display: 'modal',
-	        mode: 'scroller',
-	        inputClass: 'i-txt'
-	    });
-	    $('#aOccurance').click(function(){
-	        $('.occurScroller').scroller('show'); 
-	        return false;
-	    });
-	    $('#nOccurance').click(function(){
-	        $('.occurScroller').scroller('show'); 
-	        return false;
-	    }); 
-	
-	});
 	
 //function for setting default values
 	
