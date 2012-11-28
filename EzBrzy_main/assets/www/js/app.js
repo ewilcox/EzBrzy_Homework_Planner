@@ -250,7 +250,7 @@ function onDeviceReady() {
 	$('.mainPage').live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
-	$('.historyBack').live('tap',function() {
+	$('.clearForm').live('click',function() {
 		clearAssignmentFormData();
 		clearCourseFormData();
 		clearNoteFormData();
@@ -258,10 +258,6 @@ function onDeviceReady() {
 		$('#addCourseForm').each (function(){this.reset();});
 		$('#addNoteForm').each (function(){this.reset();});
 		$('a[data-icon=delete]').hide();
-		history.back();
-		return false;
-	}).live('click',function() {
-		return false;
 	});
 
 	//date picker function
@@ -359,6 +355,8 @@ $("#editAssignmentForm").validate({
 	    }
 	  }
 	});
+//setting all the back buttons
+
 
 function init() {
     document.addEventListener("deviceready", onDeviceReady, true);

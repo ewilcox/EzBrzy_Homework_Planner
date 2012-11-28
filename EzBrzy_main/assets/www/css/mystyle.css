@@ -15,5 +15,5 @@ p.displaying { text-align: left; padding: 5px; margin-top:0; margin-bottom: 0; }
 .no-ellipsis { 
 	text-overflow: ellipsis;
 	overflow: visible;
-	white-space: no-wrap;
+	white-space: nowrap;
 }
