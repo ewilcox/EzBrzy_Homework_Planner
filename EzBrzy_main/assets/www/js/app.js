@@ -195,7 +195,8 @@ function getDisplays() {
 	}, dbErrorHandler);
 }
 function setupDB() {
-	db = window.openDatabase("ezbrzy","1.0","EzBrzy Database",1000000);
+	//window.deleteFile("ezbrzy");
+	db = window.openDatabase("ezbrzy2","1.0","EzBrzy_Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
 function onDeviceReady() {
