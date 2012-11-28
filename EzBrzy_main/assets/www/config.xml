@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.example.accelerometer"
+        id        = "com.example.ezbrzy_homework_planner"
         version   = "1.0.0">
-    <name>Accel me</name>
+    <name>EzBrzy Homework Planner</name>
 
     <author href="http://ericswilcox.com" email="ewilcox42@gmail.com">
-        Eric Wilcox
+        Eric Wilcox and Cora Charneskey
     </author>
 
     <feature name="http://api.phonegap.com/1.0/device" />
 
-    <preference name="phonegap-version" value="2.0.0" />
+    <preference name="phonegap-version" value="2.2.0" />
     <preference name="orientation"      value="default" />
     <preference name="target-device"    value="universal" />
     <preference name="fullscreen"       value="false" />
 
     <preference name="permissions" value="none"/>
 
+	<icon src="main_icon.png" />
+	
 </widget>
