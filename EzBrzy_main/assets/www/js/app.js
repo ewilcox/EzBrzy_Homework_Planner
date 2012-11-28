@@ -360,6 +360,16 @@ function onDeviceReady() {
 	});
 }
 
+//form validation
+$("#editAssignmentForm").validate({
+	  rules: {
+		  assignDesc: {
+	      required: false,
+	      maxlength: 4
+	    }
+	  }
+	});
+
 function init() {
     document.addEventListener("deviceready", onDeviceReady, true);
 }
