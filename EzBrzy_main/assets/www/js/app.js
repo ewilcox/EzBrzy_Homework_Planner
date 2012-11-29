@@ -4,6 +4,7 @@ function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" +
 function getById(id) { return document.querySelector(id); }
 function dbSuccessCB() { alert("db.transaction success"); }
 function dbQueryError(err) { alert("DB Query Error: " + err.message); }
+function dbQueryLinkError (err) { alert("Delete Related Assignments before you can delete the course!"); }
 
 function saveAssignment() {
 	$('#editAssignmentForm').submit();
@@ -66,6 +67,9 @@ function clearAssignmentFormData() {
 	$("#assignDateDue").removeAttr('value');
 	$("#assignTimeDue").removeAttr('value');
 	$("#assignInfo").removeAttr('value');
+	$delete = $(".yesDelete");
+	$delete.removeAttr('value');
+	$delete.removeAttr('src');
 }
 function clearCourseFormData() {
 	$("#courseName").attr('value', 'My Course');
@@ -73,6 +77,9 @@ function clearCourseFormData() {
     $("#defaultDateDue").removeAttr('value');
     $("#defaultTimeDue").removeAttr('value');
     $("#courseNote").removeAttr('value');
+	$delete = $(".yesDelete");
+	$delete.removeAttr('value');
+	$delete.removeAttr('src');
 }
 function clearNoteFormData() {
 	$('#noteDesc').html('Miscellaneous');
@@ -83,7 +90,10 @@ function clearNoteFormData() {
 	$delete.removeAttr('src');
 }
 function populateAssignmentForm (tx, results) {
-	showDelete();
+	$(".yesDelete").attr({ 
+		  src: "assignment",
+		  value: results.rows.item(0).aid
+		});
 	$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 	$("#assignDesc").attr('value', results.rows.item(0).adesc);
 	$("#assignCourse").attr('value', results.rows.item(0).cid);
@@ -92,6 +102,10 @@ function populateAssignmentForm (tx, results) {
 	$("#assignInfo").attr('value', results.rows.item(0).anote);
 }
 function populateCourseForm (tx, results) {
+	$(".yesDelete").attr({ 
+		  src: "course",
+		  value: results.rows.item(0).cid
+		});
 	$("#courseName").attr('value', results.rows.item(0).cname);
     $("#courseLoc").attr('value', results.rows.item(0).cloc);
     $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
@@ -188,14 +202,20 @@ function populateNotes (tx, results) {
 function deleteNote(id) {
 	db.transaction(function(tx) {
 		tx.executeSql('DELETE FROM notes WHERE nid=?;', [id], null, dbQueryError);
-	}, dbErrorHandler);
+	});
 	$.mobile.changePage('#notes');
 }
 function deleteCourse(id) {
-	alert('delete course');
+	db.transaction(function(tx) {
+		tx.executeSql('DELETE FROM courses WHERE cid=?;', [id], null, dbQueryLinkError);
+	});
+	$.mobile.changePage('#courses');
 }
 function deleteAssignment(id) {
-	alert('delete assignement');
+	db.transaction(function(tx) {
+		tx.executeSql('DELETE FROM assignments WHERE aid=?;', [id], null, dbQueryError);
+	});
+	$.mobile.changePage('#assignments');
 }
 function getDisplays() {
 	db.transaction(function(tx) {
@@ -216,7 +236,7 @@ function onDeviceReady() {
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
 	getById('#saveNote').addEventListener("click",saveNote);
-//	$('a[data-icon=delete]').hide();
+	$('a[data-icon=delete]').hide();
 	
 	$("#editAssignmentForm").live("submit",function(e) {
 		data = {desc:$("#assignDesc").val(),
