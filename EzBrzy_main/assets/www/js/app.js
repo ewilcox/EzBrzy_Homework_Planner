@@ -23,7 +23,7 @@ function saveCourse() {
 	$('a[data-icon=delete]').hide();
 }
 function saveNote() {
-	$('#addNoteForm').submit();
+	$('#addNoteForm').submit(); //tie into validation
 	db.transaction (function (tx) {
 		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
 				[data.desc, data.due, data.time, data.rem, data.occ]);
@@ -94,7 +94,7 @@ function populateAssignmentForm (tx, results) {
 		  src: "assignment",
 		  value: results.rows.item(0).aid
 		});
-	$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
+	$('#showClass').html('Assignment - ' + results.rows.item(0).cname + '<a href="#deleteAssignmentPopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>');
 	$("#assignDesc").attr('value', results.rows.item(0).adesc);
 	$("#assignCourse").attr('value', results.rows.item(0).cid);
 	$("#assignDateDue").attr('value', results.rows.item(0).adue);
@@ -366,18 +366,22 @@ function onDeviceReady() {
 		history.back();
 		return false;
 	});
+
+	//form validation
+	$('#addNoteForm').validate({
+		 rules: {
+			 noteDesc: {
+		     required: false,
+		     maxlength: 2
+		    }
+		  }
+		});
+
+
 }
 
-//form validation
-$("#editAssignmentForm").validate({
-	  rules: {
-		  assignDesc: {
-	      required: false,
-	      maxlength: 4
-	    }
-	  }
-	});
-//setting all the back buttons
+
+
 
 
 function init() {
