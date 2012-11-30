@@ -367,6 +367,7 @@ function onDeviceReady() {
 		return false;
 	});
 
+	//this is my change
 	//form validation
 	$('#addNoteForm').validate({
 		 rules: {
