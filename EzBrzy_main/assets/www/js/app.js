@@ -94,7 +94,7 @@ function populateAssignmentForm (tx, results) {
 		  src: "assignment",
 		  value: results.rows.item(0).aid
 		});
-	$('#showClass').html('Assignment - ' + results.rows.item(0).cname + '<a href="#deleteAssignmentPopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>');
+	$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 	$("#assignDesc").attr('value', results.rows.item(0).adesc);
 	$("#assignCourse").attr('value', results.rows.item(0).cid);
 	$("#assignDateDue").attr('value', results.rows.item(0).adue);
@@ -106,6 +106,7 @@ function populateCourseForm (tx, results) {
 		  src: "course",
 		  value: results.rows.item(0).cid
 		});
+	$('#showCourse').html('Course - ' + results.rows.item(0).cname);
 	$("#courseName").attr('value', results.rows.item(0).cname);
     $("#courseLoc").attr('value', results.rows.item(0).cloc);
     $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
@@ -117,6 +118,7 @@ function populateNoteForm (tx, results) {
 		  src: "note",
 		  value: results.rows.item(0).nid
 		});
+	$('#showNote').html('Edit Note');
 	$('#noteDesc').html(results.rows.item(0).ndesc);
 	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
 	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
@@ -367,16 +369,16 @@ function onDeviceReady() {
 		return false;
 	});
 
-	//this is my change
+
 	//form validation
-	$('#addNoteForm').validate({
-		 rules: {
-			 noteDesc: {
-		     required: false,
-		     maxlength: 2
-		    }
-		  }
-		});
+//	$('#addNoteForm').validate({
+//		 rules: {
+//			 noteDesc: {
+//		     required: false,
+//		     maxlength: 2
+//		    }
+//		  }
+//		});
 
 
 }

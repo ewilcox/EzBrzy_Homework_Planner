@@ -53,20 +53,19 @@
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
 				<div>
-					<p id="showClass" class="displaying">Add New Assignment
-						<a href="#deleteAssignmentPopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>
-					</p>
+					<span id="showClass" class="displaying">Add New Assignment</span>
+						<span><a href="#deleteAssignmentPopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a></span>
 				</div>
 			</div>
 			<div data-role="content">
-				<div data-role="popup" id="#deleteAssignmentPopup" data-theme="a">
+				<div data-role="popup" id="deleteAssignmentPopup" data-theme="a">
 					<div data-role="header" class="redButton"><h3>WARNING!!</h3></div>
 					<div data-role="content" data-theme="a">Do you really want to delete this course?</div>
 					<div data-role="footer" data-theme="a">
 						<div data-role="navbar" data-theme="a">
 							<ul>
-								<li><a href="#" data-role="button" data-icon="check" class="yesDelete" data-theme="a">Yes</a></li>
-								<li><a href="#" data-role="button" data-icon="delete" class="noDelete" data-theme="a">No</a></li>
+								<li><a href="#" data-role="button" class="yesDelete" data-theme="a">Yes</a></li>
+								<li><a href="#" data-role="button" class="noDelete" data-theme="a">No</a></li>
 							</ul>
 						</div>
 					</div>
@@ -183,9 +182,8 @@
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
 				<div>
-					<p class="displaying">Add Other Reminder
-						<a href="#deleteNotePopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>
-					</p>
+					<span class="displaying" id="showNote">Add Other Reminder</span>
+						<span><a href="#deleteNotePopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a></span>
 				</div>
 			</div>
 			<div data-role="content">
@@ -195,8 +193,8 @@
 					<div data-role="footer" data-theme="a">
 						<div data-role="navbar" data-theme="a">
 							<ul>
-								<li><a href="#" data-role="button" data-icon="check" class="yesDelete" data-theme="a">Yes</a></li>
-								<li><a href="#" data-role="button" data-icon="delete" class="noDelete" data-theme="a">No</a></li>
+								<li><a href="#" data-role="button" class="yesDelete" data-theme="a">Yes</a></li>
+								<li><a href="#" data-role="button" class="noDelete" data-theme="a">No</a></li>
 							</ul>
 						</div>
 					</div>
@@ -226,25 +224,23 @@
 			<div data-role="header" data-id="myheader" data-position="fixed"><div><h4 class="appTitle">EzBrzy Homework Planner</h4></div>
 				<hr>
 				<div>
-					<p class="displaying">Set Up New Course
-						<a href="#deleteCoursePopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a>
-					</p>
+					<span class="displaying" id="showCourse">Set Up New Course</span>
+						<span><a href="#deleteCoursePopup" data-rel="popup" data-role="button" data-inline="true" data-mini="true" data-icon="delete" class="redButton" style="float:right">DELETE</a></span>
 				</div>	
-			</div>
-			<div data-role="content">
-				<div data-role="popup" id="deleteCoursePopup" data-theme="a">
-					<div data-role="header" class="redButton"><h3>WARNING!!</h3></div>
-					<div data-role="content" data-theme="a">Do you really want to delete this course?</div>
-					<div data-role="footer" data-theme="a">
-						<div data-role="navbar" data-theme="a">
-							<ul>
-								<li><a href="#" data-role="button" data-icon="check" class="yesDelete" data-theme="a">Yes</a></li>
-								<li><a href="#" data-role="button" data-icon="delete" class="noDelete" data-theme="a">No</a></li>
-							</ul>
+					<div data-role="popup" class="myPopUp" id="deleteCoursePopup" data-theme="a" >
+						<div data-role="header" class="redButton"><h3>WARNING!!</h3></div>
+						<div data-role="content" data-theme="a">Do you really want to delete this course?</div>
+						<div data-role="footer"  data-theme="a">
+							<div data-role="navbar"  data-theme="a">
+								<ul>
+									<li><a href="#" data-role="button"  class="yesDelete" data-theme="a" >Yes</a></li>
+									<li><a href="#" data-role="button"  class="noDelete" data-theme="a">No</a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
-				</div>
-		
+			</div>
+			<div data-role="content">
 				<form id="addCourseForm" class="myForm">
 					<label for="courseName">Course Title</label>
 					<input type="text" name="courseName" id="courseName"class="defaults" value="My Course"></input>
