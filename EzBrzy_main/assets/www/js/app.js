@@ -1,4 +1,4 @@
-var db, data, assignmentCount, courseCount, noteCount;
+var db, data, assignmentCount, courseCount, noteCount, courseMatch;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -72,7 +72,7 @@ function displayListing (location, results) {
 	output += 'Displaying '+ results.rows.length + ' Item(s)';
 	$(location).html(output);
 }
-//Don't think I need this specific function... keep for reference though.
+//Don't need this function... keep for reference though.
 function renderEntries(tx, results) {
 	var i;
 	for (i=0; i<results.rows.length; i++) {
@@ -149,8 +149,7 @@ function populateNoteForm (tx, results) {
 }
 function editAssignment (assignment) {
 	db.transaction (function (tx) {
-		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE aid = ' 
-				+ assignment.id, [], populateAssignmentForm, dbQueryError);
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE aid = ' + assignment.id, [], populateAssignmentForm, dbQueryError);
 	}, dbErrorHandler, showDelete);
 }
 function editCourse (course) {
@@ -227,21 +226,37 @@ function populateNotes (tx, results) {
 }
 function deleteNote(id) {
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM notes WHERE nid=?;', [id], null, dbQueryError);
+		tx.executeSql('DELETE FROM notes WHERE nid=?', [id], null, dbQueryError);
 	});
 	$.mobile.changePage('#notes');
+	clearNoteFormData();
+}
+function deleteAlert (tx, results) {
+	if (results.rows.length > 0) {
+		navigator.notification.alert(
+				'Delete course assignments first!',	// message
+				null,				// callback
+				'Delete Error',		// title
+				'Ok'				// buttonName
+		);
+	} else {
+		tx.executeSql('DELETE FROM courses WHERE cid=?', [courseMatch], null, dbQueryLinkError);
+	}
 }
 function deleteCourse(id) {
+	courseMatch = id;
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM courses WHERE cid=?;', [id], null, dbQueryLinkError);
-	});
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE courses.cid=?',[id], deleteAlert, dbQueryError);
+	}, dbErrorHandler);
 	$.mobile.changePage('#courses');
+	clearCourseFormData();
 }
 function deleteAssignment(id) {
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM assignments WHERE aid=?;', [id], null, dbQueryError);
+		tx.executeSql('DELETE FROM assignments WHERE aid=?', [id], null, dbQueryError);
 	});
 	$.mobile.changePage('#assignments');
+	clearAssignmentFormData();
 }
 function getDisplays() {
 	db.transaction(function(tx) {
