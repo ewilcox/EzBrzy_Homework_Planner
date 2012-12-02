@@ -12,8 +12,5 @@ p.displaying { text-align: left; padding: 5px; margin-top:0; margin-bottom: 0; }
 	background: linear-gradient(to bottom,  #ff3019 33%,#cf0404 66%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 ); /* IE6-9 */
 }
-.no-ellipsis { 
-	text-overflow: ellipsis;
-	overflow: visible;
-	white-space: nowrap;
-}
+
+
