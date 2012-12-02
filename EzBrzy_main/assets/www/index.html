@@ -16,10 +16,10 @@
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/mobiscroll-2.1.custom.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/jQueryTools.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.validate.min.js"></script>
 
 </head>
-<body onload="onDeviceReady();">
+<body onload="init();">
 
 <!-- Assignments Screen -->
 		<div data-role="page" class="mainPage" id="assignments" data-theme="a">
@@ -70,11 +70,11 @@
 						</div>
 					</div>
 				</div>
-				<form id="editAssignmentForm" novalidate="novalidate" >
+				<form id="editAssignmentForm" >
 					<input type="hidden" name="assignCourse" id="assignCourse" />
 					<input type="hidden" name="assignUpdate" id="assignUpdate" value="false" />
 					<label for="assignDesc">Description</label>
-					<input type="text" name="assignDesc" id="assignDesc" class="defaults" value="HW" pattern="[a-zA-Z ]" maxlength="2" />
+					<input type="text" name="assignDesc" id="assignDesc" class="defaults" value="HW" />
 					<label for="assignDateDue">Date Due:</label>
 					<input class="dateScroller" id="assignDateDue" name="scroller" />			
 					<label for="assignTimeDue">Time Due:</label>

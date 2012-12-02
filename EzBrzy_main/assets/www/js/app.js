@@ -5,6 +5,7 @@ function getById(id) { return document.querySelector(id); }
 function dbSuccessCB() { alert("db.transaction success"); }
 function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 function dbQueryLinkError (err) { alert("Delete Related Assignments before you can delete the course!"); }
+function backToEditNotes () { $.mobile.changePage('#addnote'); }
 
 function saveAssignment() {
 	var $update = $('#assignUpdate').attr('value');
@@ -36,18 +37,37 @@ function saveCourse() {
 }
 function saveNote() {
 	var $update = $('#noteUpdate').attr('value');
-	$('#addNoteForm').submit(); //tie into validation
-	$("#editAssignmentForm").validator();
-	db.transaction (function (tx) {
-		if ($update === 'false') {
-			tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
-					[data.desc, data.due, data.time, data.rem, data.occ]);
-		} else {
-			tx.executeSql('UPDATE notes SET ndesc=?, ndue=?, ntime=?, nrem=?, nocc=? WHERE nid=?',
-					[data.desc, data.due, data.time, data.rem, data.occ, data.id]);
-		}
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').hide();
+	$form = $('#addNoteForm');
+	$form.validate({
+		  rules: {
+			  noteDesc: {
+		      required: false,
+		      maxlength: 100,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/
+		    }
+		  }
+	});
+//	alert("Valid: " + $("#addNoteForm").valid());
+	if ($form.valid()) {
+		$('#addNoteForm').submit();
+		db.transaction (function (tx) {
+			if ($update === 'false') {
+				tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
+						[data.desc, data.due, data.time, data.rem, data.occ]);
+			} else {
+				tx.executeSql('UPDATE notes SET ndesc=?, ndue=?, ntime=?, nrem=?, nocc=? WHERE nid=?',
+						[data.desc, data.due, data.time, data.rem, data.occ, data.id]);
+			}
+		}, dbErrorHandler);
+		$('a[data-icon=delete]').hide();
+	} else {
+		navigator.notification.alert(
+				'Please use only valid characters.',	// message
+				backToEditNotes,					// callback
+				'Invalid Characters',	// title
+				'Ok'					// buttonName
+		);
+	}
 }
 function showDelete() {
 	$('a[data-icon=delete]').show();
@@ -374,8 +394,7 @@ function onDeviceReady() {
 	        return false;
 	    });    
 	});
-	
-	
+
 //function for setting default values
 	
 	$(function() {
@@ -398,6 +417,15 @@ function onDeviceReady() {
 		})
 		.css('color', '#999999');
 	});
+	$.validator.addMethod(
+		    "regex",
+		    function(value, element, regexp) {
+		        var check = false;
+		        var re = new RegExp(regexp);
+		        return this.optional(element) || re.test(value);
+		    },
+		    "No special Characters allowed (' ' \" # $ & ( ) _ / < > { } )"
+		);
 	
 //the delete button
 	$(".yesDelete").click(function() {
@@ -411,13 +439,6 @@ function onDeviceReady() {
 		history.back();
 		return false;
 	});
-
-
-//form validation
-	$("#editAssignmentForm").validator();
-	$("#addCourseForm").validator();
-	$("#addNoteForm").validator();
-
 }
 
 function init() {
