@@ -24,6 +24,7 @@ function saveCourse() {
 }
 function saveNote() {
 	$('#addNoteForm').submit(); //tie into validation
+	$("#editAssignmentForm").validator();
 	db.transaction (function (tx) {
 		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
 				[data.desc, data.due, data.time, data.rem, data.occ]);
@@ -370,22 +371,12 @@ function onDeviceReady() {
 	});
 
 
-	//form validation
-//	$('#addNoteForm').validate({
-//		 rules: {
-//			 noteDesc: {
-//		     required: false,
-//		     maxlength: 2
-//		    }
-//		  }
-//		});
-
+//form validation
+	$("#editAssignmentForm").validator();
+	$("#addCourseForm").validator();
+	$("#addNoteForm").validator();
 
 }
-
-
-
-
 
 function init() {
     document.addEventListener("deviceready", onDeviceReady, true);
