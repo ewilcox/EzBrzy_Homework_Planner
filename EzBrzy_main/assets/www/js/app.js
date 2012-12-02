@@ -1,4 +1,4 @@
-var db, data, assignmentCount, courseCount, noteCount;
+var db, data, assignmentCount, courseCount, noteCount, courseMatch;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -7,27 +7,45 @@ function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 function dbQueryLinkError (err) { alert("Delete Related Assignments before you can delete the course!"); }
 
 function saveAssignment() {
+	var $update = $('#assignUpdate').attr('value');
 	$('#editAssignmentForm').submit();
 	db.transaction(function(tx) {
-		tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
-				[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
+		if ($update === 'false') {
+			tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
+					[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
+		} else {
+			tx.executeSql('UPDATE assignments SET cid=?, adesc=?, adue=?, atime=?, aocc=?, arem=?, anote=? WHERE aid=?',
+					[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note, data.id]);
+		}
 	}, dbErrorHandler);
 	$('a[data-icon=delete]').hide();
 }
 function saveCourse() {
+	var $update = $('#courseUpdate').attr('value');
 	$('#addCourseForm').submit();
 	db.transaction (function (tx) {
-		tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
-				[data.name,data.loc,data.due,data.time,data.rem,data.note]);
+		if ($update === 'false') {
+			tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
+					[data.name, data.loc, data.due, data.time, data.rem, data.note]);
+		} else {
+			tx.executeSql('UPDATE courses SET cname=?, cloc=?, cdue=?, ctime=?, crem=?, cnote=? WHERE cid=?',
+					[data.name, data.loc, data.due, data.time, data.rem, data.note, data.id]);
+		}
 	}, dbErrorHandler);
 	$('a[data-icon=delete]').hide();
 }
 function saveNote() {
+	var $update = $('#noteUpdate').attr('value');
 	$('#addNoteForm').submit(); //tie into validation
 	$("#editAssignmentForm").validator();
 	db.transaction (function (tx) {
-		tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
-				[data.desc, data.due, data.time, data.rem, data.occ]);
+		if ($update === 'false') {
+			tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
+					[data.desc, data.due, data.time, data.rem, data.occ]);
+		} else {
+			tx.executeSql('UPDATE notes SET ndesc=?, ndue=?, ntime=?, nrem=?, nocc=? WHERE nid=?',
+					[data.desc, data.due, data.time, data.rem, data.occ, data.id]);
+		}
 	}, dbErrorHandler);
 	$('a[data-icon=delete]').hide();
 }
@@ -38,7 +56,7 @@ function setupTable(tx) {
 	//tx.executeSql("DROP TABLE IF EXISTS assignments");
 	//tx.executeSql("DROP TABLE IF EXISTS courses");
 	//tx.executeSql("DROP TABLE IF EXISTS notes");
-	//tx.executeSql('PRAGMA foreign_keys = ON;'); 
+	//tx.executeSql('PRAGMA foreign_keys = ON;');    Throws 'not authorized' error
 	tx.executeSql("CREATE TABLE IF NOT EXISTS courses(cid INTEGER PRIMARY KEY AUTOINCREMENT, cname TEXT NOT NULL, cloc, cdue, ctime, crem, cnote)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS assignments(" +
 					"aid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -55,7 +73,7 @@ function displayListing (location, results) {
 	output += 'Displaying '+ results.rows.length + ' Item(s)';
 	$(location).html(output);
 }
-//Don't think I need this specific function... keep for reference though.
+//Don't need this function... keep for reference though.
 function renderEntries(tx, results) {
 	var i;
 	for (i=0; i<results.rows.length; i++) {
@@ -71,6 +89,7 @@ function clearAssignmentFormData() {
 	$delete = $(".yesDelete");
 	$delete.removeAttr('value');
 	$delete.removeAttr('src');
+	$('#assignUpdate').attr('value', 'false');
 }
 function clearCourseFormData() {
 	$("#courseName").attr('value', 'My Course');
@@ -81,6 +100,7 @@ function clearCourseFormData() {
 	$delete = $(".yesDelete");
 	$delete.removeAttr('value');
 	$delete.removeAttr('src');
+	$('#courseUpdate').attr('value', 'false');
 }
 function clearNoteFormData() {
 	$('#noteDesc').html('Miscellaneous');
@@ -89,6 +109,7 @@ function clearNoteFormData() {
 	$delete = $(".yesDelete");
 	$delete.removeAttr('value');
 	$delete.removeAttr('src');
+	$('#noteUpdate').attr('value', 'false');
 }
 function populateAssignmentForm (tx, results) {
 	$(".yesDelete").attr({ 
@@ -101,6 +122,7 @@ function populateAssignmentForm (tx, results) {
 	$("#assignDateDue").attr('value', results.rows.item(0).adue);
 	$("#assignTimeDue").attr('value', results.rows.item(0).atime);
 	$("#assignInfo").attr('value', results.rows.item(0).anote);
+	$('#assignUpdate').attr('value', results.rows.item(0).aid);
 }
 function populateCourseForm (tx, results) {
 	$(".yesDelete").attr({ 
@@ -113,6 +135,7 @@ function populateCourseForm (tx, results) {
     $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
     $("#defaultTimeDue").attr('value', results.rows.item(0).ctime);
     $("#courseNote").attr('value', results.rows.item(0).cnote);
+    $('#courseUpdate').attr('value', results.rows.item(0).cid);
 }
 function populateNoteForm (tx, results) {
 	$(".yesDelete").attr({ 
@@ -123,11 +146,11 @@ function populateNoteForm (tx, results) {
 	$('#noteDesc').html(results.rows.item(0).ndesc);
 	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
 	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
+	$('#noteUpdate').attr('value', results.rows.item(0).nid);
 }
 function editAssignment (assignment) {
 	db.transaction (function (tx) {
-		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE aid = ' 
-				+ assignment.id, [], populateAssignmentForm, dbQueryError);
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE aid = ' + assignment.id, [], populateAssignmentForm, dbQueryError);
 	}, dbErrorHandler, showDelete);
 }
 function editCourse (course) {
@@ -204,21 +227,37 @@ function populateNotes (tx, results) {
 }
 function deleteNote(id) {
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM notes WHERE nid=?;', [id], null, dbQueryError);
+		tx.executeSql('DELETE FROM notes WHERE nid=?', [id], null, dbQueryError);
 	});
 	$.mobile.changePage('#notes');
+	clearNoteFormData();
+}
+function deleteAlert (tx, results) {
+	if (results.rows.length > 0) {
+		navigator.notification.alert(
+				'Delete course assignments first!',	// message
+				null,				// callback
+				'Delete Error',		// title
+				'Ok'				// buttonName
+		);
+	} else {
+		tx.executeSql('DELETE FROM courses WHERE cid=?', [courseMatch], null, dbQueryLinkError);
+	}
 }
 function deleteCourse(id) {
+	courseMatch = id;
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM courses WHERE cid=?;', [id], null, dbQueryLinkError);
-	});
+		tx.executeSql('SELECT * FROM assignments JOIN courses ON assignments.cid = courses.cid WHERE courses.cid=?',[id], deleteAlert, dbQueryError);
+	}, dbErrorHandler);
 	$.mobile.changePage('#courses');
+	clearCourseFormData();
 }
 function deleteAssignment(id) {
 	db.transaction(function(tx) {
-		tx.executeSql('DELETE FROM assignments WHERE aid=?;', [id], null, dbQueryError);
+		tx.executeSql('DELETE FROM assignments WHERE aid=?', [id], null, dbQueryError);
 	});
 	$.mobile.changePage('#assignments');
+	clearAssignmentFormData();
 }
 function getDisplays() {
 	db.transaction(function(tx) {
@@ -246,7 +285,8 @@ function onDeviceReady() {
 				courseId:$("#assignCourse").val(),
 				due:$("#assignDateDue").val(),
 				time:$("#assignTimeDue").val(),
-				note:$("#assignInfo").val()
+				note:$("#assignInfo").val(),
+				id:$('#assignUpdate').val()
         };
         //reset all the values
 		clearAssignmentFormData();
@@ -257,7 +297,8 @@ function onDeviceReady() {
                 loc:$("#courseLoc").val(),
                 due:$("#defaultDateDue").val(),
                 time:$("#defaultTimeDue").val(),
-                note:$("#courseNote").val()
+                note:$("#courseNote").val(),
+                id:$('#courseUpdate').val()
         };
         //reset all the values
         clearCourseFormData();
@@ -266,7 +307,8 @@ function onDeviceReady() {
 	$('#addNoteForm').live('submit', function (e) {
 		data = {desc:$('#noteDesc').val(),
 				due:$('#noteDateDue').val(),
-				time:$('#noteTimeDue').val()
+				time:$('#noteTimeDue').val(),
+				id:$('#noteUpdate').val()
 		};
 		//reset all the values
 		clearNoteFormData();
