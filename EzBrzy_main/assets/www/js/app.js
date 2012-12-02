@@ -369,14 +369,14 @@ function onDeviceReady() {
 
 	//this is my change
 	//form validation
-	$('#addNoteForm').validate({
-		 rules: {
-			 noteDesc: {
-		     required: false,
-		     maxlength: 2
-		    }
-		  }
-		});
+//	$('#addNoteForm').validate({
+//		 rules: {
+//			 noteDesc: {
+//		     required: false,
+//		     maxlength: 2
+//		    }
+//		  }
+//		});
 
 
 }
