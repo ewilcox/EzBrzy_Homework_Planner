@@ -37,7 +37,7 @@ function setupTable(tx) {
 	//tx.executeSql("DROP TABLE IF EXISTS assignments");
 	//tx.executeSql("DROP TABLE IF EXISTS courses");
 	//tx.executeSql("DROP TABLE IF EXISTS notes");
-	tx.executeSql('PRAGMA foreign_keys = ON;'); 
+	//tx.executeSql('PRAGMA foreign_keys = ON;'); 
 	tx.executeSql("CREATE TABLE IF NOT EXISTS courses(cid INTEGER PRIMARY KEY AUTOINCREMENT, cname TEXT NOT NULL, cloc, cdue, ctime, crem, cnote)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS assignments(" +
 					"aid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -149,7 +149,7 @@ function populateAssignments (tx, results) {
 						results.rows.item(i).cname + '</a></li>';
 		}
 	}
-	$('#assignmentData').html(output).listview('refresh');
+	$('#assignmentData:visible').html(output).listview('refresh');
 }
 function populateCourses (tx, results) {
 	displayListing('#coursesDisplay', results);
@@ -162,7 +162,7 @@ function populateCourses (tx, results) {
 			output += '<li><a href="#addCourse" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="editCourse(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
-	$('#courseData').html(output).listview('refresh');
+	$('#courseData:visible').html(output).listview('refresh');
 }
 function gotoAssignments (assignment) {
 	db.transaction(function(tx) {
@@ -182,7 +182,7 @@ function populateChooseCourses (tx, results) {
 			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).cid +'" onclick="gotoAssignments(this);">'+ results.rows.item(i).cname +'</a></li>';
 		}
 	}
-	$('#chooseCourseData').html(output).listview('refresh');
+	$('#chooseCourseData:visible').html(output).listview('refresh');
 }
 function populateNotes (tx, results) {
 	displayListing('#notesDisplay', results);
@@ -197,7 +197,7 @@ function populateNotes (tx, results) {
 			output += '<li><a href="#addnote" data-role="button" id="'+ results.rows.item(i).nid +'" onclick="editNote(this);">'+ results.rows.item(i).ndesc +'</a></li>';
 		}
 	}
-	$('#noteData').html(output).listview('refresh');
+	$('#noteData:visible').html(output).listview('refresh');
 }
 function deleteNote(id) {
 	db.transaction(function(tx) {
