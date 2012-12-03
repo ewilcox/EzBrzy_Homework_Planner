@@ -25,17 +25,50 @@ function saveAssignment() {
 }
 function saveCourse() {
 	var $update = $('#courseUpdate').attr('value');
-	$('#addCourseForm').submit();
-	db.transaction (function (tx) {
-		if ($update === 'false') {
-			tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
-					[data.name, data.loc, data.due, data.time, data.rem, data.note]);
-		} else {
-			tx.executeSql('UPDATE courses SET cname=?, cloc=?, cdue=?, ctime=?, crem=?, cnote=? WHERE cid=?',
-					[data.name, data.loc, data.due, data.time, data.rem, data.note, data.id]);
-		}
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').hide();
+	$form=$('#addCourseForm');
+	$form.validate({
+		  rules: {
+			  courseName: {
+		      required: false,
+		      maxlength: 25,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/
+		    },
+		      courseLoc:{
+		      maxlength: 50,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/   	
+		    },
+		      defaultDateDue:{
+		      maxlength: 10
+		    },
+		      defaultTimeDue:{
+		      maxlength: 10
+		    },
+		      courseNote:{
+		      maxlength: 100,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/ 
+		      }
+		  }
+	});
+	if($form.valid()){
+		$form.submit();
+		db.transaction (function (tx) {
+			if ($update === 'false') {
+				tx.executeSql('INSERT INTO courses (cname, cloc, cdue, ctime, crem, cnote) VALUES (?,?,?,?,?,?)',
+						[data.name, data.loc, data.due, data.time, data.rem, data.note]);
+			} else {
+				tx.executeSql('UPDATE courses SET cname=?, cloc=?, cdue=?, ctime=?, crem=?, cnote=? WHERE cid=?',
+						[data.name, data.loc, data.due, data.time, data.rem, data.note, data.id]);
+			}
+		}, dbErrorHandler);
+		$('a[data-icon=delete]').hide();
+	}else{
+		navigator.notification.alert(
+				'Please use only valid characters.',	// message
+				backToEditCourses,					// callback
+				'Invalid Characters',	// title
+				'Ok'					// buttonName
+		);	
+	}
 }
 function saveNote() {
 	var $update = $('#noteUpdate').attr('value');
@@ -46,7 +79,9 @@ function saveNote() {
 		      required: false,
 		      maxlength: 100,
 		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/
-		    }
+		    },
+		    noteDateDue:{maxlength: 10},
+		    noteTimeDue:{maxlength: 10}
 		  }
 	});
 //	alert("Valid: " + $("#addNoteForm").valid());
