@@ -357,13 +357,23 @@ function setupDB() {
 	db = window.openDatabase("ezbrzy","1.0","EzBrzy_Database",1000000);
 	db.transaction(setupTable, dbErrorHandler);
 }
-
+function clearData() {
+	clearAssignmentFormData();
+	clearCourseFormData();
+	clearNoteFormData();
+	$('#editAssignmentForm').each (function(){ this.reset(); });
+	$('#addCourseForm').each (function(){this.reset();});
+	$('#addNoteForm').each (function(){this.reset();});
+	$('a[data-icon=delete]').hide();
+	navigator.app.backHistory();
+}
 function onDeviceReady() {
 	setupDB();
 	getDisplays();
 	getById('#saveAssignment').addEventListener("click",saveAssignment);
 	getById('#saveCourse').addEventListener("click",saveCourse);
 	getById('#saveNote').addEventListener("click",saveNote);
+	document.addEventListener("backbutton", clearData, false);
 	$('a[data-icon=delete]').hide();
 	
 	$("#editAssignmentForm").live("submit",function(e) {
@@ -404,7 +414,7 @@ function onDeviceReady() {
 	$('.mainPage').live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
 	
-	$('.clearForm').live('click',function() {
+	$('.clearForm').live('click', function() {
 		clearAssignmentFormData();
 		clearCourseFormData();
 		clearNoteFormData();
