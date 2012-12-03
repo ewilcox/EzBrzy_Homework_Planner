@@ -11,17 +11,46 @@ function bactToEditAssignments() { $.mobile.changePage('#addAssignment'); }
 
 function saveAssignment() {
 	var $update = $('#assignUpdate').attr('value');
-	$('#editAssignmentForm').submit();
-	db.transaction(function(tx) {
-		if ($update === 'false') {
-			tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
-					[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
-		} else {
-			tx.executeSql('UPDATE assignments SET cid=?, adesc=?, adue=?, atime=?, aocc=?, arem=?, anote=? WHERE aid=?',
-					[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note, data.id]);
-		}
-	}, dbErrorHandler);
-	$('a[data-icon=delete]').hide();
+	$form=$('#editAssignmentForm');
+	$form.validate({
+		  rules: {
+			  assignDesc: {
+		      required: false,
+		      maxlength: 50,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/
+		    },
+		      assignDateDue:{
+		      maxlength: 10
+		    },
+		      assignTimeDue:{
+		      maxlength: 10
+		    },
+		      assignInfo:{
+		      maxlength: 100,
+		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/ 
+		      }
+		  }
+	});
+	if($form.valid()){
+	   $form.submit();
+		db.transaction(function(tx) {
+			if ($update === 'false') {
+				tx.executeSql('INSERT INTO assignments (cid, adesc, adue, atime, aocc, arem, anote) VALUES (?,?,?,?,?,?,?)',
+						[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note]);
+			} else {
+				tx.executeSql('UPDATE assignments SET cid=?, adesc=?, adue=?, atime=?, aocc=?, arem=?, anote=? WHERE aid=?',
+						[data.courseId, data.desc, data.due, data.time, data.occ, data.rem, data.note, data.id]);
+			}
+		}, dbErrorHandler);
+		$('a[data-icon=delete]').hide();
+	}else{
+		navigator.notification.alert(
+				'Please use only valid characters.',	// message
+				bactToEditAssignments,					// callback
+				'Invalid Characters',	// title
+				'Ok'					// buttonName
+		);	
+	}
 }
 function saveCourse() {
 	var $update = $('#courseUpdate').attr('value');
@@ -228,8 +257,8 @@ function populateAssignments (tx, results) {
 		output = '<h3>No Current Assignments</h3>';
 	} else {
 		for (i=0; i<results.rows.length; i++) {			
-			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).adesc + ' - ' + 
-						results.rows.item(i).cname + '</a></li>';
+			output += '<li><a href="#addAssignment" data-role="button" id="'+ results.rows.item(i).aid +'" onclick="editAssignment(this);">'+ results.rows.item(i).cname + ' - ' + 
+			results.rows.item(i).adesc + '</a></li>';
 		}
 	}
 	$('#assignmentData:visible').html(output).listview('refresh');
