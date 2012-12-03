@@ -5,7 +5,9 @@ function getById(id) { return document.querySelector(id); }
 function dbSuccessCB() { alert("db.transaction success"); }
 function dbQueryError(err) { alert("DB Query Error: " + err.message); }
 function dbQueryLinkError (err) { alert("Delete Related Assignments before you can delete the course!"); }
-function backToEditNotes () { $.mobile.changePage('#addnote'); }
+function backToEditNotes() { $.mobile.changePage('#addnote'); }
+function backToEditCourses() { $.mobile.changePage('#addCourse'); }
+function bactToEditAssignments() { $.mobile.changePage('#addAssignment'); }
 
 function saveAssignment() {
 	var $update = $('#assignUpdate').attr('value');
@@ -49,7 +51,7 @@ function saveNote() {
 	});
 //	alert("Valid: " + $("#addNoteForm").valid());
 	if ($form.valid()) {
-		$('#addNoteForm').submit();
+		$form.submit();
 		db.transaction (function (tx) {
 			if ($update === 'false') {
 				tx.executeSql('INSERT INTO notes (ndesc, ndue, ntime, nrem, nocc) VALUES (?,?,?,?,?)',
