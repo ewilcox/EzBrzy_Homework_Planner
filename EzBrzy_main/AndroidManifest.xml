@@ -33,7 +33,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/EzBrzy_Homework_Planner"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true" >
+        android:hardwareAccelerated="true"
+        android:exported="false" >
         <activity
             android:name=".EzBrzy_Main"
             android:label="@string/title_activity_ez_brzy__main"
