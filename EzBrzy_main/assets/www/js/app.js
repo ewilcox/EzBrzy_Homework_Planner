@@ -281,6 +281,8 @@ function gotoAssignments (assignment) {
 		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
 			$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 			$('#assignCourse').attr('value', results.rows.item(0).cid);
+			$('#assignDateDue').attr('value', results.rows.item(0).cdue);
+			$('#assignTimeDue').attr('value', results.rows.item(0).ctime);
 		}, dbQueryError);
 	}, dbErrorHandler);
 	//alert(assignment.getAttribute("data"));  //<-- this works, providing there is a 'data' attribute to the tag!
