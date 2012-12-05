@@ -248,8 +248,13 @@
 					<input type="hidden" name="courseUpdate" id="courseUpdate" value="false"/>
 					<label for="courseLoc">Location</label>
 					<input type="text" name="courseLoc" id="courseLoc" ></input>
-					<label for="defaultDateDue">Default Date Due</label>
-					<input class="dateScroller" name="defaultDateDue" id="defaultDateDue" />
+					<label for="defaultDateDue">Set Default Occurance</label>
+						<select class="occurScroller" name="scroller" id="assignOccurance" data-role="none" style="display:none">
+						    <option value="1">Today</option>
+						    <option value="2">1 day from now</option>
+						    <option value="3">2 days from now</option>
+						    <option value="4">7 days from now</option>
+						 </select> 
 					<label for="defaultTimeDue">Default Time Due</label>
 					<input class="timeScroller" name="defaultTimeDue" id="defaultTimeDue" />
 					<label for="courseNote">Additional Course Info</label>

@@ -472,6 +472,23 @@ function onDeviceReady() {
 	        return false;
 	    });    
 	});
+	
+	//occurance picker
+	$(function(){
+	    $('.occurScroller').scroller({
+	        preset: 'select',
+	        theme: 'default',
+	        display: 'modal',
+	        mode: 'scroller',
+	        inputClass: 'i-txt'
+	    });
+	    $('#assignOccurance').click(function(){
+	        $('.occurScroller').scroller('show'); 
+	        return false;
+	    });
+
+	});
+
 
 //function for setting default values
 	
