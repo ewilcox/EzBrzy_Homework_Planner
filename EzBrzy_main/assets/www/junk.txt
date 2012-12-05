@@ -57,3 +57,107 @@ $('.button').click(function(e) {
    e.preventDefault();
    // Call your AJAX here
 });
+
+//possibly a good function, didn't need it though
+function getDateDue (days) {
+	date = new Date();
+	month = date.getMonth() + 1;
+	day = date.getDate();
+	year = date.getFullYear();
+	switch(days)
+	{
+	case '1':
+		break;
+	case '2':
+		alert('case 2');
+		if (month === 2) {
+			if ((2112 - year) % 4 === 0) {
+				if (day === 29) {
+					month = 3;
+					day = 1;
+				}
+			} else if (day === 28) {
+					month = 3;
+					day = 1;
+			} else {
+				day = day + 1;
+			}
+		} else if (month === 4 || month === 6 || month === 9 || month === 11) {
+			if (day === 30) {
+				month = month + 1;
+				day = 1;
+			} else {
+				day = day + 1;
+			}
+		} else if (month === 12) {
+			if (day === 31) {
+				day = 1;
+				month = 1;
+				year = year + 1;
+			} else {
+				day = day + 1;
+			}
+		} else if (day === 31) {
+			day = 1;
+			month = month + 1;
+		} else {
+			day = day + 1;
+		}
+			break;
+	case '3':
+		alert('case 3');
+		if (month === 2) {
+			if ((2112 - year) % 4 === 0) {
+				alert('leap year');
+				if (day === 28) {
+					month = 3;
+					day = 1;
+				} else if (day === 29) {
+					month = 3;
+					day = 2;
+				}
+			} else if (day === 27) {
+				month = 3;
+				day = 1;
+			} else if (day === 28) {
+				month = 3;
+				day = 2;
+			} else {
+				day = day + 2;
+			}
+		} else if (month === 4 || month === 6 || month === 9 || month === 11) {
+				if (day === 29) {
+					month = month + 1;
+					day = 1;
+				} else if (day === 30) {
+					month = month + 1;
+					day = 2;
+				} else {
+					day = day + 2;
+				}
+			} else if (month === 12) {
+				if (day === 30) {
+					day = 1;
+					month = 1;
+					year = year + 1;
+				} else if (day === 31) {
+					day = 2;
+					month = 1;
+					year = year + 1;
+				} else {
+					day = day + 2;
+				}
+			} else if (day === 30) {
+				day = 1;
+				month = month + 1;
+			} else if (day === 31) {
+				day = 2;
+				month = month + 1;
+			} else {
+				day = day + 2;
+			}
+			break;
+	default:
+		alert('Error - date calculation malfunction');
+	}
+}

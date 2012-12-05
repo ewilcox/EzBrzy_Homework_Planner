@@ -1,4 +1,4 @@
-var db, data, assignmentCount, courseCount, noteCount, courseMatch, hour, minute, amPm;
+var db, data, assignmentCount, courseCount, noteCount, courseMatch, hour, minute, amPm, day, month, year;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -31,7 +31,7 @@ function saveAssignment() {
 		      }
 		  }
 	});
-	if($form.valid()){
+	if($form.valid()) {
 	   $form.submit();
 		db.transaction(function(tx) {
 			if ($update === 'false') {
@@ -66,7 +66,7 @@ function saveCourse() {
 		      maxlength: 50,
 		      regex: /^[A-Za-z\s\d@|^_+*!.,:~`?=%-]+$/   	
 		    },
-		      defaultDateDue:{
+		      assignOccurance:{
 		      maxlength: 10
 		    },
 		      defaultTimeDue:{
@@ -113,7 +113,6 @@ function saveNote() {
 		    noteTimeDue:{maxlength: 10}
 		  }
 	});
-//	alert("Valid: " + $("#addNoteForm").valid());
 	if ($form.valid()) {
 		$form.submit();
 		db.transaction (function (tx) {
@@ -139,6 +138,7 @@ function showDelete() {
 	$('a[data-icon=delete]').show();
 }
 function setupTable(tx) {
+	//for resetting tables during testing phase
 	//tx.executeSql("DROP TABLE IF EXISTS assignments");
 	//tx.executeSql("DROP TABLE IF EXISTS courses");
 	//tx.executeSql("DROP TABLE IF EXISTS notes");
@@ -179,7 +179,7 @@ function clearAssignmentFormData() {
 function clearCourseFormData() {
 	$("#courseName").attr('value', 'My Course');
     $("#courseLoc").removeAttr('value');
-    $("#defaultDateDue").removeAttr('value');
+    $("#assignOccurance").removeAttr('value');
     $("#defaultTimeDue").removeAttr('value');
     $("#courseNote").removeAttr('value');
 	$delete = $(".yesDelete");
@@ -219,7 +219,7 @@ function populateCourseForm (tx, results) {
 	$('#showCourse').html('Course - ' + results.rows.item(0).cname);
 	$("#courseName").attr('value', results.rows.item(0).cname);
     $("#courseLoc").attr('value', results.rows.item(0).cloc);
-    $("#defaultDateDue").attr('value', results.rows.item(0).cdue);
+    $("#assignOccurance").scroller('setValue',results.rows.item(0).cdue,'true');
     $("#defaultTimeDue").attr('value', results.rows.item(0).ctime);
     $("#courseNote").attr('value', results.rows.item(0).cnote);
     $('#courseUpdate').attr('value', results.rows.item(0).cid);
@@ -284,11 +284,32 @@ function gotoAssignments (assignment) {
 		tx.executeSql("SELECT * FROM courses WHERE cid = " + assignment.id, [], function (tx, results) {
 			$('#showClass').html('Assignment - ' + results.rows.item(0).cname);
 			$('#assignCourse').attr('value', results.rows.item(0).cid);
-			$('#assignDateDue').attr('value', results.rows.item(0).cdue);
+			date = new Date();
+			month = date.getMonth();
+			day = date.getDate();
+			year = date.getFullYear();
+			if (results.rows.item(0).cdue === '2') {
+				day = day + 1;
+			} else if (results.rows.item(0).cdue === '3') {
+				day = day + 2;
+			} else if (results.rows.item(0).cdue === '4') {
+				day = day + 3;
+			} else if (results.rows.item(0).cdue === '5') {
+				day = day + 4;
+			} else if (results.rows.item(0).cdue === '6') {
+				day = day + 5;
+			} else if (results.rows.item(0).cdue === '7') {
+				day = day + 6;
+			} else if (results.rows.item(0).cdue === '8') {
+				day = day + 7;
+			} else {
+				alert('Error - date processing error');
+			}
+			currentDate = new Array (month,day,year);
+			$('#assignDateDue').scroller('setValue',currentDate,'true');
 			$('#assignTimeDue').attr('value', results.rows.item(0).ctime);
 		}, dbQueryError);
 	}, dbErrorHandler);
-	//alert(assignment.getAttribute("data"));  //<-- this works, providing there is a 'data' attribute to the tag!
 }
 function populateChooseCourses (tx, results) {
 	var i, output = '';
@@ -372,7 +393,7 @@ function clearData() {
 	$('a[data-icon=delete]').hide();
 	navigator.app.backHistory();
 }
-function convertDate (date) {
+function convertTime (date) {
 	if (date.getHours() > 12) {
 		hour = date.getHours() - 12;
 		amPm = 1;
@@ -408,7 +429,7 @@ function onDeviceReady() {
 	$("#addCourseForm").live("submit",function(e) {
         data = {name:$("#courseName").val(), 
                 loc:$("#courseLoc").val(),
-                due:$("#defaultDateDue").val(),
+                due:$("#assignOccurance").val(),
                 time:$("#defaultTimeDue").val(),
                 note:$("#courseNote").val(),
                 id:$('#courseUpdate').val()
@@ -433,16 +454,17 @@ function onDeviceReady() {
 		set = this.getAttribute('isSet');
 		if (set === 'false') {
 			date = new Date();
-			date = convertDate(date);
+			date = convertTime(date);
 			convertedDate = new Array (hour, minute, amPm);
 			$('#defaultTimeDue').scroller('setValue',convertedDate,'true');
+			$('#assignOccurance').scroller('setValue','2','true');
 		}
 	});
 	$('#addnote').live('pageshow', function () {
 		set = this.getAttribute('isSet');
 		if (set === 'false') {
 			date = new Date();
-			date = convertDate(date);
+			date = convertTime(date);
 			convertedDate = new Array (hour, minute, amPm);
 			$('#noteTimeDue').scroller('setValue',convertedDate,'true');
 		}
@@ -475,8 +497,8 @@ function onDeviceReady() {
 			$('.dateScroller').scroller('show'); 
 			return false;
 		});
-		$('#defaultDateDue').click(function(){
-			$('.dateScroller').scroller('show'); 
+		$('#assignOccurance').click(function(){
+			$('.occurScroller').scroller('show'); 
 			return false;
 		});
 	});
@@ -515,9 +537,7 @@ function onDeviceReady() {
 	        $('.occurScroller').scroller('show'); 
 	        return false;
 	    });
-
 	});
-
 
 //function for setting default values
 	$(function() {
