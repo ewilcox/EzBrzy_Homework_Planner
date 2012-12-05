@@ -1,4 +1,4 @@
-var db, data, assignmentCount, courseCount, noteCount, courseMatch;
+var db, data, assignmentCount, courseCount, noteCount, courseMatch, hour, minute, amPm;
 
 function dbErrorHandler(err) { alert("DB Error : " + err.message + "\n\nCode=" + err.code); }
 function getById(id) { return document.querySelector(id); }
@@ -153,7 +153,6 @@ function setupTable(tx) {
 					"FOREIGN KEY (cid) REFERENCES courses (cid))");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS notes(nid INTEGER PRIMARY KEY AUTOINCREMENT, ndesc TEXT NOT NULL, ndue, ntime, nrem, nocc)");
 }
-
 function displayListing (location, results) {
 	var output = '';
 	output += 'Displaying '+ results.rows.length + ' Item(s)';
@@ -187,6 +186,7 @@ function clearCourseFormData() {
 	$delete.removeAttr('value');
 	$delete.removeAttr('src');
 	$('#courseUpdate').attr('value', 'false');
+	$('#addCourse').attr('isSet','false');
 }
 function clearNoteFormData() {
 	$('#noteDesc').html('Miscellaneous');
@@ -196,6 +196,7 @@ function clearNoteFormData() {
 	$delete.removeAttr('value');
 	$delete.removeAttr('src');
 	$('#noteUpdate').attr('value', 'false');
+	$('#addnote').attr('isSet','false');
 }
 function populateAssignmentForm (tx, results) {
 	$(".yesDelete").attr({ 
@@ -222,6 +223,7 @@ function populateCourseForm (tx, results) {
     $("#defaultTimeDue").attr('value', results.rows.item(0).ctime);
     $("#courseNote").attr('value', results.rows.item(0).cnote);
     $('#courseUpdate').attr('value', results.rows.item(0).cid);
+    $('#addCourse').attr('isSet','true');
 }
 function populateNoteForm (tx, results) {
 	$(".yesDelete").attr({ 
@@ -233,6 +235,7 @@ function populateNoteForm (tx, results) {
 	$('#noteDateDue').attr('value', results.rows.item(0).ndue);
 	$('#noteTimeDue').attr('value', results.rows.item(0).ntime);
 	$('#noteUpdate').attr('value', results.rows.item(0).nid);
+	$('#addnote').attr('isSet','true');
 }
 function editAssignment (assignment) {
 	db.transaction (function (tx) {
@@ -369,6 +372,18 @@ function clearData() {
 	$('a[data-icon=delete]').hide();
 	navigator.app.backHistory();
 }
+function convertDate (date) {
+	if (date.getHours() > 12) {
+		hour = date.getHours() - 12;
+		amPm = 1;
+	}
+	else {
+		hour = date.getHours();
+		amPm = 0;
+	}
+	if (hour === 0) { hour=12; }
+	minute = date.getMinutes();
+}
 function onDeviceReady() {
 	setupDB();
 	getDisplays();
@@ -412,9 +427,26 @@ function onDeviceReady() {
 		clearNoteFormData();
 		$('#addNoteForm').each (function(){this.reset();});
 	});
-	
 	$('.mainPage').live('pageshow', getDisplays);
 	$('#chooseCourse').live('pagebeforeshow', getDisplays);
+	$('#addCourse').live('pageshow', function () {
+		set = this.getAttribute('isSet');
+		if (set === 'false') {
+			date = new Date();
+			date = convertDate(date);
+			convertedDate = new Array (hour, minute, amPm);
+			$('#defaultTimeDue').scroller('setValue',convertedDate,'true');
+		}
+	});
+	$('#addnote').live('pageshow', function () {
+		set = this.getAttribute('isSet');
+		if (set === 'false') {
+			date = new Date();
+			date = convertDate(date);
+			convertedDate = new Array (hour, minute, amPm);
+			$('#noteTimeDue').scroller('setValue',convertedDate,'true');
+		}
+	});
 	
 	$('.clearForm').live('click', function() {
 		clearAssignmentFormData();
@@ -425,7 +457,6 @@ function onDeviceReady() {
 		$('#addNoteForm').each (function(){this.reset();});
 		$('a[data-icon=delete]').hide();
 	});
-
 	//date picker function
 	$(function(){
 		$('.dateScroller').scroller({
@@ -449,7 +480,6 @@ function onDeviceReady() {
 			return false;
 		});
 	});
-	
 	//time picker function
 	$(function(){
 	    $('.timeScroller').scroller({
@@ -458,7 +488,6 @@ function onDeviceReady() {
 	        display: 'modal',
 	        mode: 'scroller'
 	    });
-	    
 	    $('#assignTimeDue').click(function(){
 	        $('.timeScroller').scroller('show'); 
 	        return false;
@@ -472,9 +501,7 @@ function onDeviceReady() {
 	        return false;
 	    });    
 	});
-
 //function for setting default values
-	
 	$(function() {
 	    $('.defaults')
 		.focus(function() {
@@ -504,7 +531,6 @@ function onDeviceReady() {
 		    },
 		    "No special Characters allowed (' ' \" # $ & ( ) _ / < > { } )"
 		);
-	
 //the delete button
 	$(".yesDelete").click(function() {
 		if (this.getAttribute('src')==='note') { deleteNote(this.value); }
@@ -518,7 +544,6 @@ function onDeviceReady() {
 		return false;
 	});
 }
-
 function init() {
     document.addEventListener("deviceready", onDeviceReady, true);
 }
